@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Shoes Type</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <div>
+        <div class="container-fuil" style="margin: 0px 12px;">
+            <div class="row" style="height: 55px;">
+                <div class="col-2 bg-dark d-flex align-items-center justify-content-center">
+                    <p style="cursor: pointer; color: #6c757d; font-weight: bolder; font-size: larger;">NIKE SHOES</p>
+                </div>
+                <div class="col-9" style="background-color: #6c757d;"></div>
+                <div class="col-1 bg-dark d-flex justify-content-center align-items-center">
+                    <p style="cursor: pointer; color: #6c757d; font-weight: bolder;">Sign out</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2 d-flex ps-4 pt-4"
+                    style="height: calc(100vh - 65px); background-color: #f7f7f7; flex-direction: column;">
+                    <a href="/_shoes" class="mb-3">
+                        <i class="fa-solid fa-cart-shopping" style="width: 15px;"></i><span class="ms-3">Shoes</span>
+                    </a>
+                    <a href="#" class="mb-3">
+                        <i class="fa-solid fa-note-sticky" style="width: 15px;"></i><span class="ms-3">Order</span>
+                    </a>
+                    <a href="/_offer" class="mb-3">
+                        <i class="fa-regular fa-snowflake" style="width: 15px;"></i><span class="ms-3">Offer</span>
+                    </a>
+                    <a href="/_shoes_type" class="mb-3">
+                        <i class="fa-solid fa-tags" style="width: 15px;"></i><span class="ms-3">Shoes Type</span>
+                    </a>
+                    <a href="#" class="mb-3">
+                        <i class="fa-solid fa-user" style="width: 15px;"></i><span class="ms-3">User</span>
+                    </a>
+                    <a href="#" class="mb-3">
+                        <i class="fa-solid fa-rocket" style="width: 15px;"></i><span class="ms-3">Report</span>
+                    </a>
+                </div>
+                <div class="col-10">
+                    <p class="my-3 fs-5 fw-bolder">Create Shoes Type</p>
+                    <div class="mb-3">
+                        <label for="shoes_type_name" class="form-label fw-bolder">Shoes Type Name</label>
+                        <input class="form-control" type="text" placeholder="Input shoes type name"
+                            id="shoes_type_name">
+                    </div>
+                    <button type="button" onclick="createShoesType(this)" class="btn btn-outline-success">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="./javascripts/shoes_type/shoes_type_create.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Shoes Type</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <div>
+        <div class="container-fuil" style="margin: 0px 12px;">
+            <div class="row" style="height: 55px;">
+                <div class="col-2 bg-dark d-flex align-items-center justify-content-center">
+                    <p style="cursor: pointer; color: #6c757d; font-weight: bolder; font-size: larger;">NIKE SHOES</p>
+                </div>
+                <div class="col-9" style="background-color: #6c757d;"></div>
+                <div class="col-1 bg-dark d-flex justify-content-center align-items-center">
+                    <p style="cursor: pointer; color: #6c757d; font-weight: bolder;">Sign out</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2 d-flex ps-4 pt-4"
+                    style="height: calc(100vh - 65px); background-color: #f7f7f7; flex-direction: column;">
+                    <a href="/_shoes" class="mb-3">
+                        <i class="fa-solid fa-cart-shopping" style="width: 15px;"></i><span class="ms-3">Shoes</span>
+                    </a>
+                    <a href="#" class="mb-3">
+                        <i class="fa-solid fa-note-sticky" style="width: 15px;"></i><span class="ms-3">Order</span>
+                    </a>
+                    <a href="#" class="mb-3">
+                        <i class="fa-regular fa-snowflake" style="width: 15px;"></i><span class="ms-3">Offer</span>
+                    </a>
+                    <a href="/_shoes_type" class="mb-3">
+                        <i class="fa-solid fa-tags" style="width: 15px;"></i><span class="ms-3">Shoes Type</span>
+                    </a>
+                    <a href="#" class="mb-3">
+                        <i class="fa-solid fa-user" style="width: 15px;"></i><span class="ms-3">User</span>
+                    </a>
+                    <a href="#" class="mb-3">
+                        <i class="fa-solid fa-rocket" style="width: 15px;"></i><span class="ms-3">Report</span>
+                    </a>
+                </div>
+                <div class="col-10 px-5">
+                    <p class="my-3 fs-5 fw-bolder">Create Offer</p>
+                    <div class="mb-4 bg-light p-3">
+                        <label for="offer_title" class="form-label fw-bolder">Title</label>
+                        <input class="form-control" type="text" id="offer_title">
+                    </div>
+                    <div class="mb-4 bg-light p-3">
+                        <label for="offer_sub_title" class="form-label fw-bolder">Subtitle</label>
+                        <input class="form-control" type="text" id="offer_sub_title">
+                    </div>
+                    <div class="mb-4 bg-light p-3">
+                        <label for="offer_description" class="form-label fw-bolder">Description</label>
+                        <textarea class="form-control" placeholder="Input something to describe the offer..."
+                            id="offer_description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-4 bg-light p-3">
+                        <label for="offer_discount" class="form-label fw-bolder">Discount</label>
+                        <input class="form-control" id="offer_discount" type="number"></input>
+                    </div>
+                    <div class="mb-4 bg-light p-3">
+                        <label for="discount_unit" class="form-label fw-bolder">Discount Unit</label>
+                        <select class="form-select" id="discount_unit">
+                            <option selected>Choose discount unit</option>
+                            <option value="1">%</option>
+                            <option value="2">USD</option>
+                            <option value="3">VNĐ</option>
+                        </select>
+                    </div>
+                    <div class="mb-4 bg-light p-3">
+                        <label for="gender_type" class="form-label fw-bolder">Applied User Type</label>
+                        <div class="form-check">
+                            <input class="form-check-input" id="new" type="checkbox" value="1" name="user_type">
+                            <label class="form-check-label" for="new">New</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="silver" type="checkbox" value="2" name="user_type">
+                            <label class="form-check-label" for="silver">Silver</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="golden" type="checkbox" value="3" name="user_type">
+                            <label class="form-check-label" for="golden">Golden</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="diamond" type="checkbox" value="4" name="user_type">
+                            <label class="form-check-label" for="diamond">Diamond</label>
+                        </div>
+                    </div>
+                    <div class="mb-4 bg-light p-3">
+                        <div class="d-flex flex-row">
+                            <label for="gender_type" class="form-label fw-bolder">Applied Time</label>
+                            <div class="form-check form-check-inline ms-3">
+                                <input class="form-check-input" type="radio" checked name="time-option" id="time"
+                                    value="time">
+                                <label class="form-check-label" for="time">Time</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="time-option" id="day" value="day">
+                                <label class="form-check-label" for="day">Day</label>
+                            </div>
+                        </div>
+                        <div id="time-input">
+                            <div class="mb-1">
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-label fw-bolder">Start time</label>
+                                        <input  id="started_time" type='date' class="form-control" />
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label fw-bolder">End time</label>
+                                        <input id="ended_time" type='date' class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 bg-light p-3">
+                        <div class="d-flex flex-row">
+                            <label for="gender_type" class="form-label fw-bolder">Applied Product</label>
+                            <div class="form-check form-check-inline ms-3">
+                                <input class="form-check-input" type="radio" checked name="product" id="shoes" value="shoes">
+                                <label class="form-check-label" for="shoes">Shoes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="product" id="shoes_type" value="shoes_type">
+                                <label class="form-check-label" for="shoes_type">Shoes Type</label>
+                            </div>
+                        </div>
+                        <div id="product-input">
+                            <div class="mb-1">
+                                <label for="search_shoes" class="form-label fw-bolder">Search shoes</label>
+                                <input class="form-control" type="text" id="search_shoes">
+                                <div class="d-flex flex-row mt-2 align-items-center">
+                                    <button class="btn btn-outline-success">Search</button>
+                                    <p class="ms-3" id="specified_shoes" data-shoes="">...</p>
+                                    <a class="ms-3 text-success" style="cursor: pointer;">Add</a>
+                                </div>
+                                <div id="shoes_list" class="d-flex flex-row py-3">
+                                    <div style="position: relative;" class="bg-white border-1 border-dark me-3">
+                                        <p class="p-2">ShoesName</p>
+                                        <i class="fa-solid fa-xmark" style="position: absolute;top: 0px; right: 0px;"></i>
+                                    </div>
+                                    <div style="position: relative;" class="bg-white border-1 border-dark me-3">
+                                        <p class="p-2">ShoesName</p>
+                                        <i class="fa-solid fa-xmark" style="position: absolute;top: 0px; right: 0px;"></i>
+                                    </div>
+                                    <div style="position: relative;" class="bg-white border-1 border-dark me-3">
+                                        <p class="p-2">ShoesName</p>
+                                        <i class="fa-solid fa-xmark" style="position: absolute;top: 0px; right: 0px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 bg-light p-3">
+                        <div class="d-flex align-items-center">
+                            <form style="display: none;" action="/shoes_image/" method="post"
+                                enctype="multipart/form-data" id="image_form">
+                                <input type="file" name="shoes_images" id="image_input" />
+                            </form>
+                            <label for="btn_add_image" class="form-label fw-bolder"
+                                style="margin-bottom: 1px;">Image</label>
+                            <i class="fa-solid fa-circle-plus ms-2" id="btn_add_image"></i>
+                        </div>
+                        <div class="mt-2 d-flex" id="image_container">
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <button id="create_offer" class="btn btn-outline-success">Create Offer</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="./javascripts/offer/appied_time.js"></script>
+        <script src="./javascripts/offer/appied_product.js"></script>
+        <script src="./javascripts/offer/image_picker.js"></script>
+        <script src="./javascripts/offer/date_picker.js"></script>
+        <script src="./javascripts/offer/create_offer.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
