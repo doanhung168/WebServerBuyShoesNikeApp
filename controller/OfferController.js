@@ -1,19 +1,23 @@
-const Shoes = require('../model/Shoes')
+const Offer = require('../model/Offer')
 
-const ShoesController = {
+const OfferController = {
 
-    create: async (req, res) => {
+    add: async (req, res) => {
         try {
 
-            const shoesNumber = await Shoes.countDocuments({ name: req.body.name })
-            if (shoesNumber > 0) {
-                return res.json({ success: false, message: 'Exist shoes', data: null })
+            console.log(req.body)
+
+            const { title } = req.body
+            const existOffer = await Offer.countDocuments({ title: title })
+            if (existOffer > 0) {
+                return res.json({ success: false, message: 'Đã tồn tại khuyến mãi này', data: null })
             }
 
-            const shoes = new Shoes(req.body)
-            await shoes.save()
-            return res.json({ success: true, message: null, data: shoes })
-        } catch (e) {
+            const offer = new Offer(req.body)
+            await offer.save()
+            return res.json({ success: true, message: null, data: offer })
+
+        } catch (error) {
             return res.json({ success: false, message: e.message, data: null })
         }
     },
@@ -40,7 +44,7 @@ const ShoesController = {
                     sort[key.substring(5, key.length)] = parseInt(value)
                     delete query[key]
                 })
-            if(sort.length == 0) {
+            if (sort.length == 0) {
                 sort = null
             }
 
@@ -51,9 +55,9 @@ const ShoesController = {
             const filter = query
 
             if (page == null) {
-                const shoes = await Shoes.find(filter, projection)
+                const offers = await Offer.find(filter, projection)
                     .sort(sort)
-                return res.json({ success: true, message: null, data: shoes })
+                return res.json({ success: true, message: null, data: offers })
             } else {
                 let _page = 0
                 let _page_item = 10
@@ -66,22 +70,34 @@ const ShoesController = {
                     _page_item = page_item
                 }
 
-                const shoesTotal = await Shoes.countDocuments(filter)
-                const shoes = await Shoes.find(filter, projection)
+                const offerTotal = await Offer.countDocuments(filter)
+                const offers = await Offer.find(filter, projection)
                     .sort(sort)
                     .skip(_page * _page_item)
                     .limit(_page_item)
 
-                return res.json({ success: true, message: null, data: { total: shoesTotal, shoes: shoes } })
+                return res.json({ success: true, message: null, data: { total: offerTotal, shoes: offers } })
             }
 
-        } catch (e) {
+        } catch (error) {
             return res.json({ success: false, message: e.message, data: null })
         }
     },
 
-
-
+    update: async (req, res) => {
+        try {
+            console.log(req.body)
+            const { id } = req.body
+            const updatedOffer = await Offer.findByIdAndUpdate(id, req.body, { new: true })
+            if (updatedOffer) {
+                return res.json({ success: true, message: null, data: updatedOffer })
+            } else {
+                return res.json({ success: false, message: 'Không tìm thấy khuyến mãi.', data: null })
+            }
+        } catch (error) {
+            return res.json({ success: false, message: e.message, data: null })
+        }
+    }
 }
 
-module.exports = ShoesController
+module.exports = OfferController

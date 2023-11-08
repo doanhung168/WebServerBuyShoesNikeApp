@@ -17,3 +17,7 @@ a {
 a:hover {
   color: black;
 }
+
+.hand-pointer {
+  cursor: pointer;
+}

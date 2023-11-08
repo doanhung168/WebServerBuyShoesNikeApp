@@ -1,4 +1,8 @@
-const input = $('#image_input').change(function (e) {
+$('#offer-image').click(function (e) {
+    $('#image_input').click()
+});
+
+$('#image_input').change(function (e) {
     e.preventDefault();
     const formData = new FormData($('#image_form')[0])
 
@@ -12,13 +16,7 @@ const input = $('#image_input').change(function (e) {
         success: function (data) {
             if (data.success) {
                 data.data.forEach(element => {
-                    $('#image_container').empty()
-                    $('#image_container').append(
-                        `<div class="me-3" style="position: relative;display: inline-block;">
-                            <i class="fa-solid fa-circle-minus" onclick="return removeImage(this);" style="position: absolute; right: 18px; top: 2px;color: #e41b4d"></i>
-                            <img src="${element}"  width="150px" height="150px" alt="" class="me-3 shoes_image_item">
-                        </div>`
-                    );
+                    $('#offer-image').attr('src', `${element}`)
                 });
             } else {
                 alert(data.message)
@@ -30,31 +28,20 @@ const input = $('#image_input').change(function (e) {
     })
 });
 
-const btnAddImage = $('#btn_add_image').click(function (e) {
-    e.preventDefault();
-    $('#image_input').value = null
-    $('#image_input').click()
-});
-
-function removeImage(target) {
-    const img = target.parentElement.getElementsByClassName('shoes_image_item')[0]
-    const src = img.getAttribute('src')
-
-    $.ajax({
-        url: '/shoes_image/',
-        data: { src: src },
-        type: 'DELETE',
-        success: function (data) {
-            if (data.success) {
-                const parent = target.parentElement
-                parent.remove()
-            } else {
-                alert(data.message)
+function removePreviousImage() {
+    const imageSrc = $('#offer-image').attr('src')
+    if(imageSrc != '/images/placeholder.png') {
+        $.ajax({
+            url: '/shoes_image/',
+            data: { src: imageSrc },
+            type: 'DELETE',
+            success: function (data) {
+                console.log('delete image successful')
+            },
+            error: function (xhr, status, error) {
+                alert('Error: ' + error);
             }
-        },
-        error: function (xhr, status, error) {
-            alert('Error: ' + error);
-        }
-    })
-
+        })
+    }
+   
 }

@@ -15,6 +15,7 @@ const usersRouter = require('./routes/api/user')
 const shoesRouter = require('./routes/api/shoes')
 const shoesTypeRouter = require('./routes/api/shoes_type')
 const imageRouter = require('./routes/api/image')
+const offerRouter = require('./routes/api/offer')
 
 
 // connect database
@@ -38,14 +39,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', _homeRouter)
-app.use('/_shoes', _shoesRouter)
-app.use('/_shoes_type', _shoesTypeRouter)
-app.use('/_offer', _offerRouter)
+app.use('/', _shoesRouter)
+app.use('/', _shoesTypeRouter)
+app.use('/', _offerRouter)
 
 app.use('/user', usersRouter)
 app.use('/shoes', shoesRouter)
 app.use('/shoes_type', shoesTypeRouter)
 app.use('/shoes_image', imageRouter)
+app.use('/offer', offerRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
