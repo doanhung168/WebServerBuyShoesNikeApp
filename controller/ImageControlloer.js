@@ -54,7 +54,9 @@ const ImageController = {
     removeImage: (req, res) => {
         console.log(req.body.src)
         const filePath = req.body.src
-        fs.unlinkSync('public/' + filePath);
+
+        console.log('public' + filePath)
+        fs.unlinkSync('public' + filePath);
         res.json({
             success: true,
             message: null,

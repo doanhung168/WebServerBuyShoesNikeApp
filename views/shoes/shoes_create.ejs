@@ -15,37 +15,13 @@
   <div>
     <div class="container-fuil" style="margin: 0px 12px;">
       <div class="row" style="height: 55px;">
-        <div class="col-2 bg-dark d-flex align-items-center justify-content-center">
-          <p style="cursor: pointer; color: #6c757d; font-weight: bolder; font-size: larger;">NIKE SHOES</p>
-        </div>
-        <div class="col-9" style="background-color: #6c757d;"></div>
-        <div class="col-1 bg-dark d-flex justify-content-center align-items-center">
-          <p style="cursor: pointer; color: #6c757d; font-weight: bolder;">Sign out</p>
-        </div>
+        <%- include('../partial/nav_bar') %>
       </div>
-      <div class="row">
-        <div class="col-2 d-flex ps-4 pt-4"
-          style="height: calc(100vh - 65px); background-color: #f7f7f7; flex-direction: column;">
-          <a href="/_shoes" class="mb-3">
-            <i class="fa-solid fa-cart-shopping" style="width: 15px;"></i><span class="ms-3">Shoes</span>
-          </a>
-          <a href="#" class="mb-3">
-            <i class="fa-solid fa-note-sticky" style="width: 15px;"></i><span class="ms-3">Order</span>
-          </a>
-          <a href="/_offer" class="mb-3">
-            <i class="fa-regular fa-snowflake" style="width: 15px;"></i><span class="ms-3">Offer</span>
-          </a>
-          <a href="/_shoes_type" class="mb-3">
-            <i class="fa-solid fa-tags" style="width: 15px;"></i><span class="ms-3">Shoes Type</span>
-          </a>
-          <a href="#" class="mb-3">
-            <i class="fa-solid fa-user" style="width: 15px;"></i><span class="ms-3">User</span>
-          </a>
-          <a href="#" class="mb-3">
-            <i class="fa-solid fa-rocket" style="width: 15px;"></i><span class="ms-3">Report</span>
-          </a>
+      <div class="row"  id="content">
+        <div id="side-bar" class="col-2 ps-4 pt-4" style="background-color: #f7f7f7;">
+          <%- include('../partial/side_bar') %>
         </div>
-        <div class="col-10">
+        <div id="main-content" class="col-10 px-5 py-4">
           <div class="p-3" style="display: flex; align-items: center;">
             <p style="flex-grow: 1;" class="fs-5"><span style="font-weight: bolder;">Total:</span> 120</p>
             <a class="btn btn-success" href="#">Create Shoes</a>
@@ -115,7 +91,8 @@
               </select>
             </div>
             <div class="mb-3">
-              <button type="button" onclick="createShoes()" id="btn_create_shoes" class="btn btn-outline-success">Create Shoes</button>
+              <button type="button" onclick="createShoes()" id="btn_create_shoes" class="btn btn-outline-success">Create
+                Shoes</button>
             </div>
           </div>
 

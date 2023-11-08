@@ -2,28 +2,23 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-// Type: 
-// 1: for type user
-// 2: for day
-// 3: for specific shoes
-// 4: for specific shoes type
-// 5: for time
-
 const OfferSchema = new Schema({
-    type: Number, 
     discount: Number,
     discount_unit: Number,
-    sale_day: String, 
-    started_sale_time: Number,
-    ended_sale_time: Number,
-    applied_product: {type: [ObjectId], ref: 'Shoes'},
-    applied_type: {type: [ObjectId], ref: 'ShoesType'},
-    applied_user_type: [String],
+    start_time: Number,
+    end_time: Number,
+    applied_product_type: Number,  // 1: Shoes, 2: Shoes type
+    applied_shoes: {type: [ObjectId], ref: 'Shoes'},
+    applied_shoes_type: {type: [ObjectId], ref: 'ShoesType'},
+    applied_user_type: [Number], //0:All, 1: New, 2: Silver, 3: Golden, 4: Diamond
     image: String,
     title: String, 
     sub_title: String,
     description: String, 
-    created_date: {type: Date, default: Date.now}
+    number_of_offer: Number, // -1: Unlimited
+    created_date: {type: Number, default: Date.now},
+    active: {type: Boolean, default: true},
+    number_of_used_offer: {type: Number, default: 0},
 });
 
 const Offer = mongoose.model('Offer', OfferSchema);

@@ -1,67 +1,129 @@
-
-$('#shoes_type').change(function (e) {
-    $('#product-input').empty()
-    $('#product-input').append(
-        `<div class="mb-3">
-        <label for="search_shoes_type" class="form-label fw-bolder">Search shoes type</label>
-        <input class="form-control" type="text" id="search_shoes_type"/>
-        <div class="d-flex flex-row mt-2 align-items-center">
-            <button class="btn btn-outline-success">Search</button>
-            <p class="ms-3" data-shoes-type="" id="searched_shoes_type">...</p>
-            <a class="ms-3 text-success" style="cursor: pointer;">Add</a>
-        </div>
-        <div id="shoes_type_list">
-            
-        </div>
-    </div>`
-    )
-});
-
-
-function searchShoesType() {
-    const shoesTypeName = $('search_shoes_type').val()
-    if(shoesTypeName) {
-        alert('Please, enter shoes type before searching....')
-        return
-    }
-
+function loadShoesList() {
     $.ajax({
         type: "get",
-        url: "/shoes_type?active=true",
+        url: "/shoes?state=1&get_id=1&get_name=1&sort_name=1",
         success: function (response) {
-            if(response.success) {
-                $('#searched_shoes_type').html(response.data.name)
-                $('#searched_shoes_type').attr('data-shoes-type', response.data._id)
+            if (response.success) {
+                $('#shoes-list').empty()
+                response.data.forEach(shoes => {
+                    $('#shoes-list').append(
+                        `<div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="${shoes._id}" name="shoes-item" id="${shoes._id}" onchange="checkboxListener(this)"/>
+                            <label class="form-check-label" for="${shoes._id}">${shoes.name}</label>
+                        </div>`
+                    )
+                })
+                $('#all-shoes').prop('checked', true)
+                checkAll($('#all-shoes'))
+                $('#number_of_product').text(`Đã chọn ${response.data.length} sản phẩm`)
             } else {
-                alert('Error: ' + response.message)
+                console.log(response.message)
             }
+        },
+        error: function (_, err) {
+            console.log(err)
         }
     });
 }
 
+function loadShoesTypeList() {
+    $.ajax({
+        type: "get",
+        url: "/shoes_type?active=true&get_id=1&get_name=1&sort_name=1",
+        success: function (response) {
+            if (response.success) {
+                $('#shoes-type-list').empty()
+                response.data.forEach(shoesType => {
+                    $('#shoes-type-list').append(
+                        `<div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="${shoesType._id}" name="shoes-type-item" id="${shoesType._id}" onchange="checkboxListener(this)"/>
+                            <label class="form-check-label" for="${shoesType._id}">${shoesType.name}</label>
+                        </div>`
+                    )
+                })
+                $('#all-shoes-type').prop('checked', true)
+                checkAll($('#all-shoes-type'))
+            } else {
+                console.log(response.message)
+            }
+        },
+        error: function (_, error) {
+            console.log(error)
+        }
+    });
+}
 
-function addShoesType() {
-    const searchedShoesType =  $('#searched_shoes_type').attr('data-shoes-type')
-    $('#shoes_type_list').append(
-        
-    )
+function checkboxListener(element) {
+    if (!$(element).is(':checked')) {
+        const div = $(element).parent().parent().parent().find('div')[0]
+        const input = $(div).find('input')[0]
+        $(input).prop('checked', false)
+    }
+}
+
+function checkAll(element) {
+    const inputs = $(element).parent().next().find('input').get()
+    if ($(element).is(':checked')) {
+        inputs.forEach(e => {
+            $(e).prop('checked', true)
+        })
+    } else {
+        inputs.forEach(e => {
+            $(e).prop('checked', false)
+        })
+    }
+}
+
+function checkProductType(e) {
+    if ($(e).is(':checked') && $(e).val() == 'shoes') {
+        const shoesList = $('#shoes-list').find('input:checked').get();
+        $('#number_of_product').text(`Đã chọn ${shoesList.length} sản phẩm`)
+    } else if ($(e).is(':checked') && $(e).val() == 'shoes_type') {
+        const shoesTypeList = $('#shoes-type-list').find('input:checked').get();
+        $('#number_of_product').text(`Đã chọn ${shoesTypeList.length} sản phẩm`)
+    }
 }
 
 
-$('#shoes').change(function (e) {
-    $('#product-input').empty()
-    $('#product-input').append(
-        `<div class="mb-3">
-        <label for="search_shoes" class="form-label fw-bolder">Search shoes</label>
-        <input class="form-control" type="text" id="search_shoes">
-        <div class="d-flex flex-row mt-2 align-items-center">
-            <button class="btn btn-outline-success">Search</button>
-            <p class="ms-3" id="specified_shoes" data-shoes="">...</p>
-            <a class="ms-3 text-success" style="cursor: pointer;">Add</a>
-        </div>
-        <div id="shoes_list">
-            
-        </div>
-    </div>`
-    )
+
+loadShoesList()
+loadShoesTypeList()
+
+$('#choose-product').click(function (e) {
+    e.preventDefault();
+    const productInput = $('input[name="product"]:checked').val()
+    if (productInput == 'shoes') {
+        var bsOffcanvas = new bootstrap.Offcanvas($('#offcanvasForShoes'))
+        bsOffcanvas.show()
+    } else {
+        var bsOffcanvas = new bootstrap.Offcanvas($('#offcanvasForShoesType'))
+        bsOffcanvas.show()
+    }
 });
+
+var offcanvas = $('#offcanvasForShoes');
+
+offcanvas.on('show.bs.offcanvas', function () {
+    const shoesList = $('#shoes-list').find('input:checked').get();
+    $('#number_of_product').text(`Đã chọn ${shoesList.length} sản phẩm`)
+});
+
+offcanvas.on('hide.bs.offcanvas', function () {
+    const shoesList = $('#shoes-list').find('input:checked').get();
+    $('#number_of_product').text(`Đã chọn ${shoesList.length} sản phẩm`)
+});
+
+var offcanvas = $('#offcanvasForShoesType');
+
+offcanvas.on('show.bs.offcanvas', function () {
+    const shoesTypeList = $('#shoes-type-list').find('input:checked').get();
+    $('#number_of_product').text(`Đã chọn ${shoesTypeList.length} sản phẩm`)
+});
+
+
+offcanvas.on('hide.bs.offcanvas', function () {
+    const shoesTypeList = $('#shoes-type-list').find('input:checked').get();
+    $('#number_of_product').text(`Đã chọn ${shoesTypeList.length} sản phẩm`)
+});
+
+
