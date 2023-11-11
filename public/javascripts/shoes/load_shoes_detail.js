@@ -35,12 +35,14 @@ function loadShoesDetail() {
                 );
 
                 currentShoes.images.forEach(element => {
-                    $('#image_container').append(
-                        `<div class="me-3" style="position: relative;display: inline-block;">
-                            <i class="fa-solid fa-circle-minus clear-image" onclick="return removeImage(this);" style="position: absolute; right: 18px; top: 2px;color: #e41b4d"></i>
-                            <img src="${element}"  width="150px" height="150px" alt="" class="me-3 shoes_image_item">
-                        </div>`
-                    );
+                    if(element != currentShoes.main_image) {
+                        $('#image_container').append(
+                            `<div class="me-3" style="position: relative;display: inline-block;">
+                                <i class="fa-solid fa-circle-minus clear-image" onclick="return removeImage(this);" style="position: absolute; right: 18px; top: 2px;color: #e41b4d"></i>
+                                <img src="${element}"  width="150px" height="150px" alt="" class="me-3 shoes_image_item">
+                            </div>`
+                        );
+                    }
                 });
 
                 $('#gender_type').val(currentShoes.gender)
@@ -144,7 +146,7 @@ $('#btnEditor').click(function (e) {
 function loadShoesType() {
     $.ajax({
         type: "get",
-        url: "/shoes_type",
+        url: "/shoes-type",
         success: function (response) {
             if (response.success) {
                 shoesTypes = response.data

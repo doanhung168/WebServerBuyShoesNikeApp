@@ -97,6 +97,16 @@ const OfferController = {
         } catch (error) {
             return res.json({ success: false, message: e.message, data: null })
         }
+    },
+
+    getAvailableOfferList: async (req, res) => {
+        try {
+            const time = Date.now()
+            const offers = await Offer.find({ active: true, end_time: { $gt: time } })
+            return res.json({ success: true, message: null, data: offers })
+        } catch (error) {
+            return res.json({ success: false, message: e.message, data: null })
+        }
     }
 }
 

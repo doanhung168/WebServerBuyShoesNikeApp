@@ -48,11 +48,15 @@ const ShoesController = {
             delete query.page
             delete query.page_item
 
+            const {limit} = query
+            delete query.limit
+
             const filter = query
 
             if (page == null) {
                 const shoes = await Shoes.find(filter, projection)
                     .sort(sort)
+                    .limit(limit)
                 return res.json({ success: true, message: null, data: shoes })
             } else {
                 let _page = 0
