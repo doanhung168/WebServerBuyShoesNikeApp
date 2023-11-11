@@ -4,7 +4,7 @@ const ObjectId = Schema.ObjectId;
 
 const OfferSchema = new Schema({
     discount: Number,
-    discount_unit: Number,
+    discount_unit: Number, //1: %, 2: VNĐ
     start_time: Number,
     end_time: Number,
     applied_product_type: Number,  // 1: Shoes, 2: Shoes type

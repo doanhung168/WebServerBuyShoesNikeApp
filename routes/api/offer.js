@@ -8,4 +8,7 @@ router
   .get('/', OfferController.get)
   .put('/', OfferController.update)
 
+router
+  .get('/get-available-offer', OfferController.getAvailableOfferList)
+
 module.exports = router;
