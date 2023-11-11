@@ -13,7 +13,7 @@ function loadShoesList() {
                             <img src="${element.main_image}" style="width: 150px; height: 150px;"/>
                                 <div class="d-flex flex-column justify-content-top ms-3">
                                     <p><b>Tên giày: </b><span>${element.name}</span></p>
-                                    <p><b>Giá giày: </b><span>${element.price}</span> </p>
+                                    <p><b>Giá giày: </b><span>${element.price} USD</span> </p>
                                     <p><b>Số lượng đã bán: </b><span>${element.sold}</span> </p>
                                     <p><b>Đáng giá: </b><span>${element.rate}</span> </p>
                                     <p><b>Loại giày: </b><span>${element.type}</span> </p>
