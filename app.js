@@ -45,7 +45,7 @@ app.use('/', _offerRouter)
 
 app.use('/user', usersRouter)
 app.use('/shoes', shoesRouter)
-app.use('/shoes_type', shoesTypeRouter)
+app.use('/shoes-type', shoesTypeRouter)
 app.use('/shoes_image', imageRouter)
 app.use('/offer', offerRouter)
 
