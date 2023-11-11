@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Shoes Type</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <div>
+        <div class="container-fuil" style="margin: 0px 12px;">
+            <div class="row" style="height: 55px;">
+                <%- include('../partial/nav_bar') %>
+            </div>
+            <div class="row"  id="content">
+                <div id="side-bar" class="col-2 ps-4 pt-4" style="background-color: #f7f7f7;">
+                    <%- include('../partial/side_bar') %>
+                </div>
+                <div id="main-content" class="col-10 px-5 py-4">
+                    <div class="p-3" style="display: flex; align-items: center;">
+                        <p style="flex-grow: 1;" class="fs-5 fw-bolder">Số loại giày hiện tại:<span id="number_of_type_shoes"> ...</span></p>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createShoesTypeModal">Tạo một loại giày mới</button>
+                    </div>
+                    <hr>
+
+                    <div class="d-flex py-3 mx-3" style="flex-direction: column;" id="shoes-type-list-container">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal create shoes type -->
+    <div class="modal fade" id="createShoesTypeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tạo loại giày mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="shoes_type_name" class="form-label fw-bolder">Tên loại giày</label>
+                        <input class="form-control" type="text" placeholder="Nhâp tên loại giày ..."
+                            id="shoes_type_name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary"  onclick="createShoesType()" >Tạo loại giày</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal update shoes type -->
+    <div class="modal fade" id="updateShoesTypeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa loại giày mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="updated-shoes-type-id" data-id="" class="d-none"></p>
+                    <div class="mb-3">
+                        <label for="updated_shoes_type_name" class="form-label fw-bolder">Tên loại giày</label>
+                        <input class="form-control" type="text" id="updated_shoes_type_name" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updated-shoes-type-state" class="form-label fw-bolder">Trạng thái</label>
+                        <select id="updated-shoes-type-state" class="form-select">
+                            <option value="false">Không hoạt động</option>
+                            <option value="true">Đang hoạt động</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-success"  onclick="updateShoesType()" >Cập nhật thông tin loại giày</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="/javascripts/shoes_type/shoes_type_list.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

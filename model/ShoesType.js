@@ -4,6 +4,7 @@ const ObjectId = Schema.ObjectId;
 
 const ShoesTypeSchema = new Schema({
   name: String,
+  active: {type: Boolean, default: true},
   created_date: { type: Number, default: Date.now },
 });
 
