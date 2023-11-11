@@ -5,7 +5,7 @@ function loadShoesType() {
 
     $.ajax({
         type: "get",
-        url: "/shoes_type/",
+        url: "/shoes-type/",
         success: function (response) {
             if (response.success) {
                 response.data.forEach(element => {
