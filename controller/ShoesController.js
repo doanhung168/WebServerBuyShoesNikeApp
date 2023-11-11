@@ -40,7 +40,7 @@ const ShoesController = {
                     sort[key.substring(5, key.length)] = parseInt(value)
                     delete query[key]
                 })
-            if(sort.length == 0) {
+            if (sort.length == 0) {
                 sort = null
             }
 
@@ -80,7 +80,55 @@ const ShoesController = {
         }
     },
 
+    getShoesById: async (req, res) => {
+        try {
+            const query = req.query
+            console.log(query)
 
+            let populate = []
+            Object.entries(query)
+                .filter(([key, value]) => key.substring(0, 3) == 'pot')
+                .map(([key, value]) => {
+                    const pop = { path: value }
+                    populate.push(pop)
+                    delete query[key]
+                })
+
+            if (populate.length == 0) {
+                populate = null
+            }
+
+            const filter = query
+            console.log(filter)
+
+            const shoes = await Shoes.findOne(filter).populate(populate)
+            if (shoes != null) {
+                return res.json({ success: true, message: null, data: shoes })
+            } else {
+                return res.json({ success: false, message: 'Not found shoes', data: null })
+            }
+
+        } catch (error) {
+            return res.json({ success: false, message: error, data: null })
+        }
+    },
+
+    update: async (req, res) => {
+        try {
+            console.log(req.body)
+            const id = req.body.id
+            delete req.body.id
+
+            const updatedShoes = await Shoes.findByIdAndUpdate(id, req.body, { new: true })
+            if (updatedShoes) {
+                return res.json({ success: true, message: null, data: updatedShoes })
+            } else {
+                return res.json({ success: false, message: 'Không tìm thấy giày này.', data: null })
+            }
+        } catch (error) {
+            return res.json({ success: false, message: e.message, data: null })
+        }
+    }
 
 }
 

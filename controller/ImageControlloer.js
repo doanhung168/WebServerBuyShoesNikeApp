@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname))
     }
-}) 
+})
 
 const upload = multer({ storage: storage }).array('shoes_images')
 
@@ -36,13 +36,13 @@ const ImageController = {
                     data: null
                 })
             }
-    
+
             const data = []
             req.files.forEach((file) => {
                 const path = file.path
                 data.push(getPath(path))
             })
-    
+
             res.json({
                 success: true,
                 message: null,
@@ -52,17 +52,36 @@ const ImageController = {
     },
 
     removeImage: (req, res) => {
-        console.log(req.body.src)
-        const filePath = req.body.src
+        try {
+            console.log(req.body.src)
+            const filePath = req.body.src
 
-        console.log('public' + filePath)
-        fs.unlinkSync('public' + filePath);
-        res.json({
-            success: true,
-            message: null,
-            data: null
-        })
+            console.log('public' + filePath)
+            fs.unlinkSync('public' + filePath);
+            res.json({
+                success: true,
+                message: null,
+                data: null
+            })
+        } catch(error) {
+            if(error.errno == -4058) {
+                res.json({
+                    success: true,
+                    message: null,
+                    data: null
+                })
+            } else {
+                res.json({
+                    success: false,
+                    message: error,
+                    data: null
+                })
+            }
+            
+        }
+
     }
+
 
 }
 

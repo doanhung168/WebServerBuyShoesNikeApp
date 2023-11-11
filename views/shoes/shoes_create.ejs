@@ -22,36 +22,30 @@
           <%- include('../partial/side_bar') %>
         </div>
         <div id="main-content" class="col-10 px-5 py-4">
-          <div class="p-3" style="display: flex; align-items: center;">
-            <p style="flex-grow: 1;" class="fs-5"><span style="font-weight: bolder;">Total:</span> 120</p>
-            <a class="btn btn-success" href="#">Create Shoes</a>
-          </div>
-          <hr>
-
-          <div class="d-flex py-3 mx-3" style="flex-direction: column;">
-            <p class="my-3 fs-5 fw-bolder">Create Shoes</p>
+          <div class="d-flex mx-3" style="flex-direction: column;">
+            <p class="my-3 fs-5 fw-bolder">Tạo giày mới</p>
             <div class="mb-3">
-              <label for="shoes_name" class="form-label fw-bolder">Shoes name</label>
-              <input class="form-control" type="text" placeholder="Input shoes name" id="shoes_name">
+              <label for="shoes_name" class="form-label fw-bolder">Tên giày</label>
+              <input class="form-control" type="text" id="shoes_name" placeholder="Tên giày ...">
             </div>
             <div class="mb-3">
-              <label for="shoes_description" class="form-label fw-bolder">Description</label>
-              <textarea class="form-control" placeholder="Input something to describe the shoes..."
+              <label for="shoes_description" class="form-label fw-bolder">Mô tả</label>
+              <textarea class="form-control" placeholder="Viết vài thứ về giày ..."
                 id="shoes_description" rows="5"></textarea>
             </div>
             <div class="mb-3">
-              <label for="shoes_price" class="form-label fw-bolder">Price</label>
-              <input class="form-control" id="shoes_price" type="number"></input>
+              <label for="shoes_price" class="form-label fw-bolder">Giá</label>
+              <input class="form-control" id="shoes_price" type="number"  placeholder="Giá của giày ..."></input>
             </div>
             <div class="mb-3">
-              <label for="shoes_type" class="form-label fw-bolder">Shoes Type</label>
+              <label for="shoes_type" class="form-label fw-bolder">Loại giày</label>
               <select class="form-select" id="shoes_type">
-                <option value="" selected>Select shoes type</option>
+                <option value="" selected>Vui lòng chọn loại giày</option>
               </select>
             </div>
             <div class="mb-3">
               <div class="d-flex align-items-center">
-                <label for="btn_add_color" class="form-label fw-bolder" style="margin-bottom: 4px;">Color</label>
+                <label for="btn_add_color" class="form-label fw-bolder" style="margin-bottom: 4px;">Màu giày khả dụng</label>
                 <i class="fa-solid fa-circle-plus ms-2" id="btn_add_color"></i>
               </div>
               <div class="mt-2" id="color_container">
@@ -60,7 +54,7 @@
             </div>
             <div class="mb-3">
               <div class="d-flex align-items-center">
-                <label for="btn_add_size" class="form-label fw-bolder" style="margin-bottom: 1px;">Size</label>
+                <label for="btn_add_size" class="form-label fw-bolder" style="margin-bottom: 1px;">Size giày khả dụng</label>
                 <i class="fa-solid fa-crosshairs ms-2" id="btn_add_size" data-bs-toggle="modal"
                   data-bs-target="#exampleModal"></i>
               </div>
@@ -74,7 +68,7 @@
                   id="image_form">
                   <input type="file" name="shoes_images" multiple id="image_input" />
                 </form>
-                <label for="btn_add_image" class="form-label fw-bolder" style="margin-bottom: 1px;">Image</label>
+                <label for="btn_add_image" class="form-label fw-bolder" style="margin-bottom: 1px;">Hình ảnh</label>
                 <i class="fa-solid fa-circle-plus ms-2" id="btn_add_image"></i>
               </div>
               <div class="mt-2 d-flex" id="image_container">
@@ -82,17 +76,16 @@
               </div>
             </div>
             <div class="mb-3">
-              <label for="gender_type" class="form-label fw-bolder">Gender</label>
+              <label for="gender_type" class="form-label fw-bolder">Giới tình phù hợp với giày</label>
               <select class="form-select" id="gender_type">
-                <option value="" selected>Select gender</option>
+                <option value="" selected>Chọn giới tính phù hợp</option>
                 <option value="0">All</option>
                 <option value="1">Male</option>
                 <option value="2">Female</option>
               </select>
             </div>
             <div class="mb-3">
-              <button type="button" onclick="createShoes()" id="btn_create_shoes" class="btn btn-outline-success">Create
-                Shoes</button>
+              <button type="button" onclick="createShoes()" id="btn_create_shoes" class="btn btn-outline-success">Tạo giày</button>
             </div>
           </div>
 
