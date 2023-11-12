@@ -12,6 +12,7 @@ const OfferSchema = new Schema({
     applied_shoes_type: {type: [ObjectId], ref: 'ShoesType'},
     applied_user_type: [Number], //0:All, 1: New, 2: Silver, 3: Golden, 4: Diamond
     image: String,
+    background_image: String, 
     title: String, 
     sub_title: String,
     description: String, 

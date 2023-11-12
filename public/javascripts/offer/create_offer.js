@@ -82,6 +82,8 @@ $('#create_offer_form').on('submit', function (e) {
             }
         }
 
+        const background_image = $('#background-color').val()
+
         const offer = {
             title: title,
             sub_title: subTitle,
@@ -93,6 +95,7 @@ $('#create_offer_form').on('submit', function (e) {
             applied_user_type: userType,
             applied_product_type: appliedProduct,
             image: imageSrc,
+            background_image: background_image, 
             number_of_offer: numberOfOffer
         }
 
