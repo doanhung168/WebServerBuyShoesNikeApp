@@ -17,6 +17,12 @@ const shoesTypeRouter = require('./routes/api/shoes_type')
 const imageRouter = require('./routes/api/image')
 const offerRouter = require('./routes/api/offer')
 
+const promoRouter = require('./routes/api/promo')
+const shippingRouter = require('./routes/api/shipping')
+const addressRouter = require('./routes/api/address')
+const shoesToCartRouter = require('./routes/api/shoesToCart')
+const cartRouter = require('./routes/api/cart')
+
 
 // connect database
 mongoose.connect('mongodb+srv://hung:hung@cluster0.isn42.mongodb.net/shoes', {
@@ -48,6 +54,12 @@ app.use('/shoes', shoesRouter)
 app.use('/shoes-type', shoesTypeRouter)
 app.use('/shoes_image', imageRouter)
 app.use('/offer', offerRouter)
+
+app.use('/promo',promoRouter)
+app.use('/shipping',shippingRouter)
+app.use('/address',addressRouter)
+app.use('/shoesToCart',shoesToCartRouter)
+app.use('/cart',cartRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
