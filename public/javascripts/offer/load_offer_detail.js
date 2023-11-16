@@ -30,6 +30,15 @@ function enableInput(enable) {
         }
     });
 
+    const colors = $('input[type="color"]').get()
+    colors.forEach(element => {
+        if(enable){
+            $(element).prop('disabled', false)
+        } else {
+            $(element).prop('disabled', true)
+        }
+    })
+
 
     const checkboxs = $('input[type="checkbox"]').get()
     checkboxs.forEach(element => {
@@ -109,10 +118,11 @@ function loadShoesList(selectedShoesList) {
 function loadShoesTypeList(selectedShoesTypeList) {
     $.ajax({
         type: "get",
-        url: "/shoes_type?active=true&get_id=1&get_name=1&sort_name=1",
+        url: "/shoes-type?active=true",
         success: function (response) {
             if (response.success) {
                 $('#shoes-type-list').empty()
+                console.log(response.data)
                 response.data.forEach(shoesType => {
                     $('#shoes-type-list').append(
                         `<div class="form-check">
@@ -155,6 +165,12 @@ function loadOfferDetail(_id) {
                 $('#discount_unit').val(offer.discount_unit)
                 $('#start-time').val(formatDateFromNumber(offer.start_time))
                 $('#end-time').val(formatDateFromNumber(offer.end_time))
+                $('#background-color').val(offer.background_image)
+
+                $('#newCustomer').val(1)
+                $('#silverCustomer').val(2)
+                $('#goldCustomer').val(3)
+                $('#diamondCustomer').val(4)
 
                 if (offer.applied_user_type[0] == 0) {
                     $('#allCustomer').prop('checked', true)
@@ -163,12 +179,6 @@ function loadOfferDetail(_id) {
                     $('#goldCustomer').prop('checked', true)
                     $('#diamondCustomer').prop('checked', true)
                 } else {
-
-                    $('#newCustomer').val(1)
-                    $('#silverCustomer').val(2)
-                    $('#goldCustomer').val(3)
-                    $('#diamondCustomer').val(4)
-
                     if (offer.applied_user_type.includes(1)) {
                         $('#newCustomer').prop('checked', true)
                     }

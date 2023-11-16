@@ -9,7 +9,8 @@ router
   .put('/', ShoesController.update)
 
 router
-  .get('/shoes-by-id', ShoesController.getShoesById)
+
+  .get('/:id', ShoesController.getShoesById)
 
 
 module.exports = router;

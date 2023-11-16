@@ -102,10 +102,12 @@ const ShoesController = {
                 populate = null
             }
 
-            const filter = query
-            console.log(filter)
+            const id = req.params.id
+            if(id == null) {
+                return
+            }
 
-            const shoes = await Shoes.findOne(filter).populate(populate)
+            const shoes = await Shoes.findById(id).populate(populate)
             if (shoes != null) {
                 return res.json({ success: true, message: null, data: shoes })
             } else {
