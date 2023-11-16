@@ -7,6 +7,7 @@ const OfferSchema = new Schema({
     discount_unit: Number, //1: %, 2: USD
     start_time: Number,
     end_time: Number,
+    type: {type: Number, default: true}, // 1: chung, 2: từng sản phẩm, 3: freeship
     applied_product_type: Number,  // 1: Shoes, 2: Shoes type
     applied_shoes: {type: [ObjectId], ref: 'Shoes'},
     applied_shoes_type: {type: [ObjectId], ref: 'ShoesType'},
