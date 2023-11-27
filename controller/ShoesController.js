@@ -48,7 +48,7 @@ const ShoesController = {
             delete query.page
             delete query.page_item
 
-            const {limit} = query
+            const { limit } = query
             delete query.limit
 
             const filter = query
@@ -103,7 +103,7 @@ const ShoesController = {
             }
 
             const id = req.params.id
-            if(id == null) {
+            if (id == null) {
                 return
             }
 
@@ -131,6 +131,42 @@ const ShoesController = {
             } else {
                 return res.json({ success: false, message: 'Không tìm thấy giày này.', data: null })
             }
+        } catch (error) {
+            return res.json({ success: false, message: e.message, data: null })
+        }
+    },
+
+    getShoesByName: async (req, res) => {
+        try {
+            const { name, gender, min_price, max_price, rate, type, sort } = req.query;
+
+            let _sort
+
+            const filter = {
+                name: { $regex: name, $options: 'i' },
+                price: { $gte: min_price, $lte: max_price }
+            }
+
+            if (gender != null) {
+                filter.gender = Number.parseInt(gender)
+            }
+
+            if (rate != null) {
+                filter.rate = { $gte: Number.parseInt(rate), $lte: rate + 0.9 }
+            }
+
+            if (type != null) {
+                filter.type = type
+            }
+
+            if (sort == "Popular") {
+                _sort = { sold: 1 }
+            } else {
+                _sort = { created_date: 1 }
+            }
+
+            const shoesList = await Shoes.find(filter).sort(_sort)
+            return res.json({ success: true, message: null, data: shoesList })
         } catch (error) {
             return res.json({ success: false, message: e.message, data: null })
         }
