@@ -22,6 +22,7 @@ const shippingRouter = require('./routes/api/shipping')
 const addressRouter = require('./routes/api/address')
 const shoesToCartRouter = require('./routes/api/shoesToCart')
 const cartRouter = require('./routes/api/cart')
+const receiptRouter = require('./routes/api/receipt')
 
 
 // connect database
@@ -60,6 +61,7 @@ app.use('/shipping',shippingRouter)
 app.use('/address',addressRouter)
 app.use('/shoesToCart',shoesToCartRouter)
 app.use('/cart',cartRouter)
+app.use('/receipt',receiptRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

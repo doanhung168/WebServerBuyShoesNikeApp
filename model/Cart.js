@@ -6,8 +6,8 @@ const CartSchema = new Schema({
     idU:String,
     idShoesToCart:[String],
     idAddress:String,
-    idPromo:String,
     idShipping:String,
+    totalPrice:Number,
     createdDate: { type: Number, default: Date.now },
 });
 
