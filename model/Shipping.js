@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const ShippingSchema = new Schema ({
     name: String,
     price:Number,
+    days:Number
 })
 
 

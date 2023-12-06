@@ -6,8 +6,8 @@ const ShoesToCartSchema =new Schema({
     idShoes:String,
     sizeChoose:Number,
     colorChoose:String,
-    createdDate: { type: Number, default: Date.now },
-    quantity :Number
+    quantity :Number,
+    createdDate: { type: Number, default: Date.now }
 })
 const ShoesToCart= mongoose.model('ShoesToCart', ShoesToCartSchema);
 module.exports = ShoesToCart

@@ -3,24 +3,32 @@ const ShoesToCart =require('../model/ShoesToCart')
 const ShoesToCartController ={
     create:async(req,res)=>{
         try {
-            const ShoesOdered = await ShoesToCart.where({"idU":req.body.idU}).where({"idShoes":req.body.idShoes}).where({"colorChoose":req.body.colorChoose}).where({"sizeChoose":req.body.sizeChoose})
-            if(ShoesOdered!= null){
-                console.log("update" + ShoesOdered);
-                ShoesOdered.forEach(async(objShoes)=>{
-                    const objS = new ShoesToCart()
-                    objS._id = objShoes._id
-                    objS.idU = objShoes.idU
-                    objS.idShoes = objShoes.idShoes
-                    objS.colorChoose = objShoes.colorChoose
-                    objS.sizeChoose = objShoes.sizeChoose
-                    objS.quantity = objShoes.quantity+req.body.quantity
-                    try {
-                        await ShoesToCart.findByIdAndUpdate(objShoes._id,objS)
-                        res.json(objS)
-                    } catch (error) {
-                        return res.json({ success: false, message: error.message, data: null })
-                    }
-                })
+            const shoesToCartNumber = await ShoesToCart.countDocuments();
+            if(shoesToCartNumber>0){
+                //check xem co trung san pham khong
+                const ShoesOdered = await ShoesToCart.where({"idU":req.body.idU}).where({"idShoes":req.body.idShoes}).where({"colorChoose":req.body.colorChoose}).where({"sizeChoose":req.body.sizeChoose})
+                if(ShoesOdered!= null){
+                    console.log("update" + ShoesOdered);
+                    ShoesOdered.forEach(async(objShoes)=>{
+                        const objS = new ShoesToCart()
+                        objS._id = objShoes._id
+                        objS.idU = objShoes.idU
+                        objS.idShoes = objShoes.idShoes
+                        objS.colorChoose = objShoes.colorChoose
+                        objS.sizeChoose = objShoes.sizeChoose
+                        objS.quantity = objShoes.quantity+req.body.quantity
+                        try {
+                            await ShoesToCart.findByIdAndUpdate(objShoes._id,objS)
+                            res.json(objS)
+                        } catch (error) {
+                            return res.json({ success: false, message: error.message, data: null })
+                        }
+                    })
+                }else{
+                    const shoesToCart = new ShoesToCart(req.body)
+                    await shoesToCart.save()
+                    return res.json(shoesToCart)
+                }
             }else{
                 const shoesToCart = new ShoesToCart(req.body)
                 await shoesToCart.save()
