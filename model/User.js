@@ -1,20 +1,32 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
+const { Bcrypt, Constraint } = require('../utlity')
 
 const UserSchema = new Schema({
-    name: String,
-    orders: {type: [ObjectId], ref: 'Order'},
-    favorite_shoes: {type: [ObjectId], ref: 'Shoes'},
-    email: String,
-    password: String,
-    account_type: Number,
-    state: Number,
-    authen_code: Number,
-    avatar: String,
-    offers: {type: [ObjectId], ref: 'Offer'},
-    created_date: { type: Date, default: Date.now },
-  });
-  
-  const User = mongoose.model('User', UserSchema);
-  module.exports = User
+  name: String,
+  orders: { type: [ObjectId], ref: 'Order' },
+  favorite_shoes: { type: [ObjectId], ref: 'Shoes' },
+  email: String,
+  password: String,
+  account_type: {type: Number, default: 0}, // 0: local, 1: facebook, 2: google
+  account_id: Number, 
+  state: { type: Number, default: 1 }, // 0: inactive, 1: active, 2: block
+  authen_code: { type: Number, default: -1 },
+  avatar: String,
+  offers: { type: [ObjectId], ref: 'Offer' },
+  created_date: { type: Number, default: Date.now },
+});
+
+UserSchema.pre('save', async function (next) {
+  try {
+    if (this.password) {
+      this.password = await Bcrypt.enscrypt(this.password)
+    }
+  } catch (e) {
+    next(e)
+  }
+})
+
+const User = mongoose.model('User', UserSchema);
+module.exports = User
