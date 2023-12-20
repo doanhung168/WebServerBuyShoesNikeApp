@@ -32,7 +32,7 @@ function enableInput(enable) {
 
     const colors = $('input[type="color"]').get()
     colors.forEach(element => {
-        if(enable){
+        if (enable) {
             $(element).prop('disabled', false)
         } else {
             $(element).prop('disabled', true)
@@ -60,7 +60,7 @@ function enableInput(enable) {
 
     $('#offer_title').prop('readonly', true)
 
-    if(enable) {
+    if (enable) {
         $('#offer-image').attr('data-enable', true)
     } else {
         $('#offer-image').attr('data-enable', false)
@@ -115,34 +115,6 @@ function loadShoesList(selectedShoesList) {
     });
 }
 
-function loadShoesTypeList(selectedShoesTypeList) {
-    $.ajax({
-        type: "get",
-        url: "/shoes-type?active=true",
-        success: function (response) {
-            if (response.success) {
-                $('#shoes-type-list').empty()
-                console.log(response.data)
-                response.data.forEach(shoesType => {
-                    $('#shoes-type-list').append(
-                        `<div class="form-check">
-                            <input class="form-check-input" ${selectedShoesTypeList.includes(shoesType._id) ? 'checked' : ''} type="checkbox" value="${shoesType._id}" name="shoes-type-item" id="${shoesType._id}" onchange="checkboxListener(this)" disabled/>
-                            <label class="form-check-label" for="${shoesType._id}">${shoesType.name}</label>
-                        </div>`
-                    )
-                })
-
-            } else {
-                console.log(response.message)
-            }
-        },
-        error: function (_, error) {
-            console.log(error)
-
-        }
-    });
-}
-
 
 function loadOfferDetail(_id) {
 
@@ -159,56 +131,12 @@ function loadOfferDetail(_id) {
                 const offer = response.data[0]
                 console.log(offer)
                 $('#offer_title').val(offer.title)
-                $('#offer_sub_title').val(offer.sub_title)
                 $('#offer_description').val(offer.description)
                 $('#offer_discount').val(offer.discount)
                 $('#discount_unit').val(offer.discount_unit)
                 $('#start-time').val(formatDateFromNumber(offer.start_time))
                 $('#end-time').val(formatDateFromNumber(offer.end_time))
-                $('#background-color').val(offer.background_image)
-
-                $('#newCustomer').val(1)
-                $('#silverCustomer').val(2)
-                $('#goldCustomer').val(3)
-                $('#diamondCustomer').val(4)
-
-                if (offer.applied_user_type[0] == 0) {
-                    $('#allCustomer').prop('checked', true)
-                    $('#newCustomer').prop('checked', true)
-                    $('#silverCustomer').prop('checked', true)
-                    $('#goldCustomer').prop('checked', true)
-                    $('#diamondCustomer').prop('checked', true)
-                } else {
-                    if (offer.applied_user_type.includes(1)) {
-                        $('#newCustomer').prop('checked', true)
-                    }
-
-                    if (offer.applied_user_type.includes(2)) {
-                        $('#silverCustomer').prop('checked', true)
-                    }
-
-                    if (offer.applied_user_type.includes(3)) {
-                        $('#goldCustomer').prop('checked', true)
-                    }
-
-                    if (offer.applied_user_type.includes(4)) {
-                        $('#diamondCustomer').prop('checked', true)
-                    }
-
-                }
-
-
-                if (offer.applied_product_type == '1') {
-                    $('#shoes').prop('checked', true)
-                    $('#number_of_product').text(`Đã chọn ${offer.applied_shoes.length} giày`)
-                    loadShoesList(offer.applied_shoes)
-                    disableShoesTypeList()
-                } else {
-                    $('#shoes_type').prop('checked', true)
-                    $('#number_of_product').text(`Đã chọn ${offer.applied_shoes_type.length} loại giày`)
-                    loadShoesTypeList(offer.applied_shoes_type)
-                    disableShoesList()
-                }
+                $('#discount_type').val(offer.type)
 
                 $('#offer-image').attr('src', offer.image)
 
@@ -219,8 +147,16 @@ function loadOfferDetail(_id) {
                     $('#number_of_offer').val(offer.number_of_offer)
                 }
 
+                if (offer.max_value == '-1') {
+                    $('#unlimit_max_value').prop('checked', true)
+                    $('#max_value').css('display', 'none')
+                } else {
+                    $('#max_value').val(offer.max_value)
+                }
+
                 $('#number_of_used_offer').text(offer.number_of_used_offer)
                 $('#active').val(`${offer.active}`)
+                $('#value_to_apply').val(offer.value_to_apply)
 
                 enableInput(false)
             }
@@ -232,7 +168,7 @@ loadOfferDetail(null)
 
 
 function enableEditor(element) {
-    if($(element).attr('data-enable') == 'true') {
+    if ($(element).attr('data-enable') == 'true') {
         $('#enable_editor').attr('data-enable', false)
         $('#enable_editor').text('Mở trình chỉnh sửa khuyến mãi')
         $('#save_offer').addClass('d-none')
@@ -242,7 +178,7 @@ function enableEditor(element) {
         $('#enable_editor').text('Đóng trình chỉnh sửa khuyến mãi')
         $('#save_offer').removeClass('d-none')
         enableInput(true)
-    }        
+    }
 }
 
 $('#choose-product').click(function (e) {
@@ -332,11 +268,6 @@ function removePreviousImage() {
 function uploadOffer() {
 
     const id = $('#offer-id').attr('data-id')
-    const subTitle = $('#offer_sub_title').val()
-    if (subTitle == '') {
-        alert('Vui lòng nhập tiêu đề 2')
-        return
-    }
 
     const description = $('#offer_description').val()
     if (description == '') {
@@ -373,55 +304,6 @@ function uploadOffer() {
         return
     }
 
-    const userType = []
-
-    if ($('#allCustomer').prop('checked')) {
-        userType.push($('#allCustomer').val())
-    } else {
-        $('input[name="customerType"]:checked').each(function () {
-            userType.push($(this).val())
-        })
-    }
-
-    if (userType.length == 0) {
-        alert('Vui lòng chọn loại khách hàng được áp dụng khuyến mãi')
-        return
-    }
-
-    const applied_shoes = []
-    const applied_shoes_type = []
-    let appliedProduct = 0
-
-    const productInput = $('input[name="product"]:checked').val()
-    if (productInput == 'shoes') {
-        appliedProduct = 1
-        const shoesList = $('#shoes-list').find('input').get();
-        shoesList.forEach(element => {
-            if ($(element).is(':checked')) {
-                applied_shoes.push($(element).val())
-            }
-        });
-
-        if (applied_shoes.length == 0) {
-            alert('Vui lòng chọn giày được khuyến mãi')
-            return
-        }
-
-    } else {
-        appliedProduct = 2
-        const shoesTypeList = $('#shoes-type-list').find('input').get()
-        shoesTypeList.forEach(e => {
-            if ($(e).is(':checked')) {
-                applied_shoes_type.push($(e).val())
-            }
-        })
-
-        if (applied_shoes_type.length == 0) {
-            alert('Vui lòng chọn loại giày được khuyến mãi')
-            return
-        }
-    }
-
 
     let imageSrc = $('#offer-image').attr('src')
     if (imageSrc == './images/add_img_placeholder.png') {
@@ -442,27 +324,34 @@ function uploadOffer() {
         }
     }
 
+    let maxValue = -1
+    if ($('#unlimit_max_value').prop('checked')) {
+        maxValue = -1
+    } else {
+        const number = $('#max_value').val()
+        if (number == '') {
+            alert('Vui lòng chọn số lượng vé khuyến mãi')
+            return
+        } else {
+            maxValue = number
+        }
+    }
+
     const active = $('#active').val()
+    const value_to_apply = $('#value_to_apply').val()
 
     const offer = {
         id: id,
-        sub_title: subTitle,
         description: description,
         discount: discount,
         discount_unit: discountUnit,
         start_time: new Date(startTime).getTime(),
         end_time: new Date(endTime).getTime() + (1000 * 60 * 60 * 24 - 1000),
-        applied_user_type: userType,
-        applied_product_type: appliedProduct,
         image: imageSrc,
         number_of_offer: numberOfOffer,
-        active: active
-    }
-
-    if (appliedProduct == 1) {
-        offer.applied_shoes = applied_shoes
-    } else {
-        offer.applied_shoes_type = applied_shoes_type
+        active: active,
+        value_to_apply: value_to_apply,
+        max_value: maxValue
     }
 
     $.ajax({

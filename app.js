@@ -17,21 +17,18 @@ const shoesRouter = require('./routes/api/shoes')
 const shoesTypeRouter = require('./routes/api/shoes_type')
 const imageRouter = require('./routes/api/image')
 const offerRouter = require('./routes/api/offer')
-
-const promoRouter = require('./routes/api/promo')
-const shippingRouter = require('./routes/api/shipping')
 const addressRouter = require('./routes/api/address')
-const shoesToCartRouter = require('./routes/api/shoesToCart')
-const cartRouter = require('./routes/api/cart')
-const receiptRouter = require('./routes/api/receipt')
+const orderDetailRouter = require('./routes/api/order_detail')
+const orderRouter = require('./routes/api/order')
+
 
 
 // connect database
 mongoose.connect('mongodb+srv://hung:hung@cluster0.isn42.mongodb.net/shoes', {
   serverSelectionTimeoutMS: 5000
 })
-.then(() => console.log('connect database successfully'))
-.catch(err => console.log(err.reason));
+  .then(() => console.log('connect database successfully'))
+  .catch(err => console.log(err.reason));
 
 var app = express();
 
@@ -41,7 +38,7 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({limit: '100mb', extended: true, parameterLimit: 1000000}));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true, parameterLimit: 1000000 }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -56,21 +53,17 @@ app.use('/shoes', shoesRouter)
 app.use('/shoes-type', shoesTypeRouter)
 app.use('/shoes_image', imageRouter)
 app.use('/offer', offerRouter)
-
-app.use('/promo',promoRouter)
-app.use('/shipping',shippingRouter)
-app.use('/address',addressRouter)
-app.use('/shoesToCart',shoesToCartRouter)
-app.use('/cart',cartRouter)
-app.use('/receipt',receiptRouter)
+app.use('/address', addressRouter)
+app.use('/order-detail', orderDetailRouter)
+app.use('/order', orderRouter)
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

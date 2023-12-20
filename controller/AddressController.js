@@ -1,47 +1,69 @@
 const Address = require('../model/Address')
 
-const AddressController ={
-    create : async(req,res) =>{
+const AddressController = {
+    create: async (req, res) => {
+        req.body.idU = req.user._id
+        console.log(req.body)
         try {
-            if(req.body.default == true){
-                const addressDefault = await Address.where({'idU':req.body.idU}).where({'default':true})
-                if(addressDefault!=null){
-                   addressDefault.forEach(async(objTrue) =>{
-                    const objAr = new Address()
-                    objAr._id = objTrue._id
-                    objAr.name = objTrue.name
-                    objAr.address = objTrue.address
-                    objAr.default = false
-                    try {
-                        await Address.findByIdAndUpdate(objTrue._id,objAr)
-                    } catch (error) {
-                        console.log(error);
-                    }
-                   })
-                }
-                const address = new Address(req.body)
-                await address.save()
-                return res.json({address})
+            if (req.body.default == 'true') {
+                await Address.findOneAndUpdate({ idU: req.user._id, default: true }, { default: false })
             }
             const address = new Address(req.body)
             await address.save()
-            return res.json({ success: true, message: null, data: address })
+            return res.json({ success: true, message: null, data: null })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
     },
-    get :async(req,res) =>{
+
+    getByUserID: async (req, res) => {
         try {
-            var listAddress = await Address.find({'idU':req.params.idU})
-            return res.json(listAddress)
+            console.log(req.query + " /n user_id: " + req.user._id)
+            var listAddress = await Address.find({ 'idU': req.user._id })
+            return res.json({ success: true, message: null, data: listAddress })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
     },
-    getById:async(req,res) =>{
+
+
+    update: async (req, res) => {
         try {
-            let address =await Address.findById(req.params.id)
-            return res.json(address)
+            console.log(req.body)
+            if (req.body.default == 'true') {
+                await Address.findOneAndUpdate({ idU: req.user._id, default: true }, { default: false })
+            }
+            const updatedaddress = await Address.findOneAndUpdate({ _id: req.body.id, idU: req.user._id }, req.body, { new: true })
+            if (updatedaddress) {
+                return res.json({ success: true, message: null, data: null })
+            } else {
+                return res.json({ success: false, message: "Xảy ra lỗi", data: null })
+            }
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    delete: async (req, res) => {
+        try {
+            console.log(req.params)
+            const result = await Address.findOneAndDelete({ _id: req.params.id, idU: req.user._id })
+            console.log(result)
+            return res.json({ success: true, message: null, data: null })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    geDefaultAddressByUserID: async (req, res) => {
+        try {
+            const result = await Address.findOne({ idU: req.user.id, default: true })
+            if (result) {
+                return res.json({ success: true, message: null, data: result })
+            } else {
+                return res.json({ success: false, message: "Không tìm thấy địa chỉ mặc định", data: null })
+            }
+
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }

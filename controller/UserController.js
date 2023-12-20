@@ -20,7 +20,7 @@ function generateRandomNumber() {
     return randomNumber;
 }
 
-const AuthController = {
+const UserController = {
 
 
     requestRegister: async (req, res) => {
@@ -109,10 +109,7 @@ const AuthController = {
     },
 
     autoLogin: async (req, res) => {
-        const user = req.user
-        return res.json({
-            success: true, message: null, data: { user: user }
-        })
+        return res.json({ success: true, message: null, data: { user: req.user } })
     },
 
     forgotPassword: async (req, res) => {
@@ -169,9 +166,43 @@ const AuthController = {
         console.log(req)
         const { current_password, new_password } = req.body
 
-    }
+    },
+
+
+    getOfferOfUser: async (req, res) => {
+        try {
+            const time = Date.now()
+            const result = await User.findById(req.user._id, { offers: 1 })
+                .populate({ path: 'offers', match: { active: true, end_time: { $gt: time } }, options: { sort: { created_date: -1 } } })
+            return res.json({ success: true, message: null, data: result.offers })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    addOffer: async (req, res) => {
+        try {
+            console.log(req.user._id + " " + req.body.id)
+            const result = await User.findOneAndUpdate({ _id: req.user._id }, { $push: { offers: req.body.id } })
+            console.log(result)
+            return res.json({ success: true, message: null, data: null })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    getFavoriteShoesOfUser: async (req, res) => {
+        try {
+            const shoes = await User.findById(req.user._id, { favorite_shoes: 1 })
+                .populate({ path: 'favorite_shoes', match: { $or: [{ state: 1 }, { state: 2 }] } })
+                .sort({ created_date: -1 })
+            return res.json({ success: true, message: null, data: shoes })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
 
 
 }
 
-module.exports = AuthController
+module.exports = UserController

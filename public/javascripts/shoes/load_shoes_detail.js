@@ -4,51 +4,57 @@ function loadShoesDetail() {
     const id = $('#shoes_id').attr('data-id')
     $.ajax({
         type: "get",
-        url: `/shoes/shoes-by-id?_id=${id}&pot_type=type`,
+        url: `/shoes/${id}?pot_type=type`,
         success: function (response) {
             if (response.success) {
                 currentShoes = response.data
                 console.log(currentShoes)
-                $('#shoes_name').val(currentShoes.name)
-                $('#shoes_description').val(currentShoes.description)
-                $('#shoes_price').val(currentShoes.price)
-                $('#shoes_type').val(currentShoes.type._id)
-                currentShoes.available_colors.forEach(element => {
-                    $('#color_container').append(
-                        `<div class="me-3" style="position: relative;display: inline-block;">
+                if (currentShoes) {
+                    $('#shoes_name').val(currentShoes.name)
+                    $('#shoes_description').val(currentShoes.description)
+                    $('#shoes_price').val(currentShoes.price)
+                    $('#shoes_type').val(currentShoes.type._id)
+                    currentShoes.available_colors.forEach(element => {
+                        $('#color_container').append(
+                            `<div class="me-3" style="position: relative;display: inline-block;">
                             <i class="fa-solid fa-circle-minus clear-color" onclick="return removeColor(this);" style="position: absolute; right: -7px; top: -7px;"></i>
                             <input type="color" style="width: 50px;" class="form-control form-control-color" value="${element}">
                         </div>`
-                    )
-                });
+                        )
+                    });
 
-                currentShoes.available_sizes.forEach(element => {
-                    $('#size-' + element).trigger("click")
-                });
+                    currentShoes.available_sizes.forEach(element => {
+                        $('#size-' + element).trigger("click")
+                    });
 
-                $('#image_container').empty()
-                $('#image_container').append(
-                    `<div class="me-3" style="position: relative;display: inline-block;">
+                    $('#image_container').empty()
+                    $('#image_container').append(
+                        `<div class="me-3" style="position: relative;display: inline-block;">
                         <i class="fa-solid fa-circle-minus clear-image" onclick="return removeImage(this);" style="position: absolute; right: 18px; top: 2px;color: #e41b4d"></i>
                         <img src="${currentShoes.main_image}"  width="150px" height="150px" alt="" class="me-3 shoes_image_item">
                     </div>`
-                );
+                    );
 
-                currentShoes.images.forEach(element => {
-                    if(element != currentShoes.main_image) {
-                        $('#image_container').append(
-                            `<div class="me-3" style="position: relative;display: inline-block;">
+                    currentShoes.images.forEach(element => {
+                        if (element != currentShoes.main_image) {
+                            $('#image_container').append(
+                                `<div class="me-3" style="position: relative;display: inline-block;">
                                 <i class="fa-solid fa-circle-minus clear-image" onclick="return removeImage(this);" style="position: absolute; right: 18px; top: 2px;color: #e41b4d"></i>
                                 <img src="${element}"  width="150px" height="150px" alt="" class="me-3 shoes_image_item">
                             </div>`
-                        );
-                    }
-                });
+                            );
+                        }
+                    });
 
-                $('#gender_type').val(currentShoes.gender)
-                $('#shoes_state').val(currentShoes.state)
+                    $('#gender_type').val(currentShoes.gender)
+                    $('#shoes_state').val(currentShoes.state)
+                    $('#shoes_quantity').val(currentShoes.quantity)
+                    $('#shoes_discount').val(currentShoes.discount_quantity)
+                    $('#discount_unit').val(currentShoes.discount_unit)
 
-                enableInput(false)
+                    enableInput(false)
+                }
+
             } else {
                 console.log(response.message)
             }
@@ -181,23 +187,23 @@ loadShoesType()
 
 
 function updateShoes() {
-    
+
     const id = $('#shoes_id').attr('data-id')
 
     const description = $('#shoes_description').val()
-    if(description == '') {
+    if (description == '') {
         alert('Description cannot be empty')
         return
     }
 
     const price = $('#shoes_price').val()
-    if(price == '') {
+    if (price == '') {
         alert('Price cannot be empty')
         return
     }
 
     const shoesType = $('#shoes_type').val()
-    if(shoesType == '') {
+    if (shoesType == '') {
         alert('Please choose the shoes type')
         return
     }
@@ -208,7 +214,7 @@ function updateShoes() {
         colorArr.push($(element).val())
     });
 
-    if(colorArr.length == 0) {
+    if (colorArr.length == 0) {
         alert('Please choose the available colors for the shoes')
         return
     }
@@ -220,7 +226,7 @@ function updateShoes() {
         sizeArr.push($(element).attr('data-size'))
     });
 
-    if(sizeArr.length == 0) {
+    if (sizeArr.length == 0) {
         alert('Please choose available sizes for shoes')
         return
     }
@@ -231,16 +237,36 @@ function updateShoes() {
         imageArr.push($(element).attr('src'))
     });
 
-    if(imageArr.length == 0) {
+    if (imageArr.length == 0) {
         alert('Please pick image for shoes')
         return
     }
 
     const gender = $('#gender_type').val()
-    if(gender == '') {
+    if (gender == '') {
         alert('Please choose gender')
         return
     }
+
+    const quantity = $('#shoes_quantity').val()
+    if(quantity == '' || parseInt(quantity) < 0) {
+        alert('Vui lòng nhập số lượng giày hiện có')
+        return
+    }
+
+    const discount_quantity = $('#shoes_discount').val()
+    if(discount_quantity == '') {
+        alert('Vui lòng nhập giảm giá')
+        return
+    }
+
+    const discount_unit = $('#discount_unit').val()
+    if(discount_unit == '0' && discount_quantity > 100 ) {
+        alert('Kiểm tra lại giảm giá')
+        return
+    }
+
+    const state = $('#shoes_state').val()
 
     const shoes = {
         id: id,
@@ -251,7 +277,11 @@ function updateShoes() {
         available_colors: colorArr,
         main_image: imageArr[0],
         images: imageArr,
-        gender: gender 
+        gender: gender,
+        quantity: quantity,
+        discount_quantity: discount_quantity,
+        discount_unit: discount_unit,
+        state: state
     }
 
     $.ajax({
@@ -259,7 +289,7 @@ function updateShoes() {
         url: "/shoes/",
         data: shoes,
         success: function (response) {
-            if(response.success) {
+            if (response.success) {
                 alert('Cập nhật thông tin giày thành công')
                 location.reload()
             } else {
