@@ -26,9 +26,17 @@
             </div>
             <div id="main-content" class="col-10 px-5 py-4">
 
-                <div class="d-flex flex-row justify-content-between">
-                    <p class=" mb-3 fs-4 fw-bolder">Danh sách các khuyến mãi</p>
-                    <a href="/offer-create" class="align-self-end btn btn-outline-success mb-4">Tạo một khuyến mãi mới</a>
+                <div style="display: flex;" class="mb-3 justify-content-between">
+                    <p class="fs-4 fw-bolder m-0">Danh sách các khuyến mãi</p>
+                    <div class="m-0">
+                        <select id="offer_state" class="me-4" style="border: none; outline: none;">
+                            <option selected value="0">Trạng thái: Hoạt động</option>
+                            <option value="1">Trạng thái: Tất cả</option>
+                            <option value="2">Trạng thái: Hết hiệu lực</option>
+                            <option value="3">Trạng thái: Không hoạt động</option>
+                        </select>
+                        <a href="/offer-create" class="btn btn-outline-success m-0">Tạo một khuyến mãi mới</a>
+                    </div>
                 </div>
                 <div id="offer-list">
                     

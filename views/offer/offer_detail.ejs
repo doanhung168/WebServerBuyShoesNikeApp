@@ -43,10 +43,6 @@
                         <input class="form-control" type="text" id="offer_title" required>
                     </div>
                     <div class="mb-3">
-                        <label for="offer_sub_title" class="form-label fw-bolder">Tiêu đề 2</label>
-                        <input class="form-control" type="text" id="offer_sub_title" required>
-                    </div>
-                    <div class="mb-3">
                         <label for="offer_description" class="form-label fw-bolder">Mô tả</label>
                         <textarea class="form-control" id="offer_description" rows="3" required></textarea>
                     </div>
@@ -57,9 +53,8 @@
                     <div class="mb-3">
                         <label for="discount_unit" class="form-label fw-bolder">Đơn vị</label>
                         <select class="form-select" id="discount_unit" required>
-                            <option value="" disabled selected>Chọn đơn vị</option>
-                            <option value="1">%</option>
-                            <option value="2">USD</option>
+                            <option value="0">%</option>
+                            <option value="1">VNĐ</option>
                         </select>
                     </div>
                     <div class="mb-3 row">
@@ -72,71 +67,21 @@
                             <input class="form-control" type="date" required id="end-time">
                         </div>
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label fw-bolder">Khách hàng được áp dụng</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="customerType" id="allCustomer"
-                                value="0">
-                            <label class="form-check-label" for="allCustomer">
-                                Tất cả
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="customerType" id="newCustomer"
-                                value="1">
-                            <label class="form-check-label" for="newCustomer">
-                                Mới
-                            </label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="customerType" id="silverCustomer"
-                                value="2">
-                            <label class="form-check-label" for="silverCustomer">
-                                Hạng Bạc
-                            </label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="customerType" id="goldCustomer"
-                                value="3">
-                            <label class="form-check-label" for="goldCustomer">
-                                Hạng Vàng
-                            </label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="customerType" id="diamondCustomer"
-                                value="4">
-                            <label class="form-check-label" for="diamondCustomer">
-                                Hạng Kim Cương
-                            </label>
-                        </div>
+                        <label for="value_to_apply" class="form-label fw-bolder">Áp dụng khi giá trị đơn hàng lớn hơn hoặc bằng (tính theo vnđ)</label>
+                        <input class="form-control" id="value_to_apply" type="number" value="0" min="0" required></input>
                     </div>
 
                     <div class="mb-3">
-                        <div class="d-flex flex-row">
-                            <label for="gender_type" class="form-label fw-bolder">Sản phẩm được áp
-                                dụng</label>
-                            <div class="form-check form-check-inline ms-4" id="shoes-div">
-                                <input class="form-check-input" type="radio" name="product" id="shoes" value="shoes"
-                                    onchange="checkProductType(this)">
-                                <label class="form-check-label" id="shoes-lable" for="shoes">Giày</label>
-                            </div>
-                            <div class="form-check form-check-inline" id="shoes-type-div">
-                                <input class="form-check-input" type="radio" name="product" id="shoes_type"
-                                    value="shoes_type" onchange="checkProductType(this)">
-                                <label class="form-check-label" id="shoes-type-lable" for="shoes_type">Loại giày</label>
-                            </div>
+                        <div class="d-flex flex-row align-content-center">
+                            <label for="max_value" class="form-label fw-bolder">Giảm tối đa (tính theo vnđ)</label>   
+                            <input class="ms-4 form-check-input" type="checkbox" id="unlimit_max_value" />
+                            <label class="ms-2 form-label" style="font-size: 14px;align-self: center;"
+                                for="unlimit_max_value">Không
+                                giới hạn</label>
                         </div>
-                        <div class="d-flex flex-row">
-                            <p id="choose-product" class="fw-light fs-6" style="cursor: pointer;">Nhấn đây để
-                                chọn sản
-                                phẩm: </p>
-                            <p class="align-self-center ms-3 text-danger" id="number_of_product">Đã chọn 0
-                                sản phẩm
-                            </p>
-                        </div>
+                        <input class="form-control" id="max_value" type="number" value="0" min="0" required></input>
                     </div>
 
                     <div class="mb-3">
@@ -144,11 +89,6 @@
                             ảnh</label>
                         <img id="offer-image" style="width: 200px; height: 200px;border: none; margin: 0; padding: 0;"
                             class="my-1 form-control" src="/images/add_img_placeholder.png">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="background-color" class="form-label fw-bolder">Image background color: </label>
-                        <input type="color" style="width: 50px;" id="background-color" class="form-control form-control-color" value="#563d7c">
                     </div>
 
                     <div class="mb-3">
@@ -188,50 +128,8 @@
                     <input type="file" name="shoes_images" id="image_input" />
                 </form>
 
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasForShoes"
-                    aria-labelledby="offcanvasRightLabel">
-                    <div class="offcanvas-header">
-                        <h5 id="offcanvasRightLabel">Giày</h5>
-                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="all-shoes" name="shoes-item"
-                                onchange="checkAll(this)">
-                            <label class="form-check-label" for="all-shoes">
-                                Chọn tất cả giày
-                            </label>
-                        </div>
-                        <div id="shoes-list">
 
-                        </div>
-                    </div>
-                </div>
-
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasForShoesType"
-                    aria-labelledby="offcanvasRightLabel">
-                    <div class="offcanvas-header">
-                        <h5 id="offcanvasRightLabel">Loại giày</h5>
-                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="all-shoes-type"
-                                name="shoes-item" onchange="checkAll(this)" />
-                            <label class="form-check-label" for="all-shoes-type">
-                                Chọn tất cả loại giày
-                            </label>
-                        </div>
-                        <div id="shoes-type-list">
-
-                        </div>
-                    </div>
-                </div>
-
-
-                <script src="../../javascripts/offer/user_type_controler.js"></script>
+                <script src="../../javascripts/offer/number_of_offer.js"></script>
                 <script src="../../javascripts/offer/load_offer_detail.js"></script>
 
             </div>

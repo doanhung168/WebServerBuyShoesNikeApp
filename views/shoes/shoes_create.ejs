@@ -38,6 +38,17 @@
               <input class="form-control" id="shoes_price" type="number"  placeholder="Giá của giày ..."></input>
             </div>
             <div class="mb-3">
+              <label for="shoes_discount" class="form-label fw-bolder">Giảm giá</label>
+              <input class="form-control" id="shoes_discount" type="number" value="0"  placeholder="Giảm giá của giày ..."></input>
+            </div>
+            <div class="mb-3">
+              <label for="discount_unit" class="form-label fw-bolder">Đơn vị giảm giá</label>
+              <select class="form-select" id="discount_unit" required>
+                  <option selected value="0">%</option>
+                  <option value="1">VNĐ</option>
+              </select>
+            </div>
+            <div class="mb-3">
               <label for="shoes_type" class="form-label fw-bolder">Loại giày</label>
               <select class="form-select" id="shoes_type">
                 <option value="" selected>Vui lòng chọn loại giày</option>
@@ -83,6 +94,10 @@
                 <option value="1">Male</option>
                 <option value="2">Female</option>
               </select>
+            </div>
+            <div class="mb-3">
+              <label for="shoes_quantity" class="form-label fw-bolder">Số lượng giày</label>
+              <input class="form-control" id="shoes_quantity" type="number" min="1" placeholder="Số lượng giày hiện có..."></input>
             </div>
             <div class="mb-3">
               <button type="button" onclick="createShoes()" id="btn_create_shoes" class="btn btn-outline-success">Tạo giày</button>

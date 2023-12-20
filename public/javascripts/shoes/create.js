@@ -66,6 +66,26 @@ function createShoes() {
         return
     }
 
+
+    const quantity = $('#shoes_quantity').val()
+    if(quantity == '' || parseInt(quantity) < 0) {
+        alert('Vui lòng nhập số lượng giày hiện có')
+        return
+    }
+
+    const discount_quantity = $('#shoes_discount').val()
+    if(discount_quantity == '') {
+        alert('Vui lòng nhập giảm giá')
+        return
+    }
+
+    const discount_unit = $('#discount_unit').val()
+    if(discount_unit == '0' && discount_quantity > 100 ) {
+        alert('Kiểm tra lại giảm giá')
+        return
+    }
+
+
     const shoes = {
         name: name,
         description: description,
@@ -75,7 +95,10 @@ function createShoes() {
         available_colors: colorArr,
         main_image: imageArr[0],
         images: imageArr,
-        gender: gender 
+        gender: gender,
+        quantity: quantity,
+        discount_quantity: discount_quantity,
+        discount_unit: discount_unit,
     }
 
     $.ajax({
@@ -84,7 +107,8 @@ function createShoes() {
         data: shoes,
         success: function (response) {
             if(response.success) {
-                alert('Create shoes successfully')
+                alert('Tạo giày thành công')
+                window.location.href = "/shoes-list"
             } else {
                 alert(response.message)
             }

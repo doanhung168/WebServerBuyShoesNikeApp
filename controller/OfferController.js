@@ -18,7 +18,7 @@ const OfferController = {
             return res.json({ success: true, message: null, data: offer })
 
         } catch (error) {
-            return res.json({ success: false, message: e.message, data: null })
+            return res.json({ success: false, message: error.message, data: null })
         }
     },
 
@@ -80,7 +80,7 @@ const OfferController = {
             }
 
         } catch (error) {
-            return res.json({ success: false, message: e.message, data: null })
+            return res.json({ success: false, message: error.message, data: null })
         }
     },
 
@@ -95,17 +95,37 @@ const OfferController = {
                 return res.json({ success: false, message: 'Không tìm thấy khuyến mãi.', data: null })
             }
         } catch (error) {
-            return res.json({ success: false, message: e.message, data: null })
+            return res.json({ success: false, message: error.message, data: null })
         }
     },
 
     getAvailableOfferList: async (req, res) => {
         try {
             const time = Date.now()
-            const offers = await Offer.find({ active: true, end_time: { $gt: time } })
+            const offers = await Offer.find({ active: true, end_time: { $gt: time } }).sort({created_date: -1})
             return res.json({ success: true, message: null, data: offers })
         } catch (error) {
-            return res.json({ success: false, message: e.message, data: null })
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    getExpiredOffer: async (req, res) => {
+        try {
+            const time = Date.now()
+            const offers = await Offer.find({ active: true, end_time: { $lt: time } }).sort({created_date: -1})
+            return res.json({ success: true, message: null, data: offers })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    getOfferOfUser: async (req, res) => {
+        try {
+            const time = Date.now()
+            const offers = await Offer.find({ active: true, end_time: { $gt: time } }).sort({created_date: -1})
+            return res.json({ success: true, message: null, data: offers })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
         }
     }
 }

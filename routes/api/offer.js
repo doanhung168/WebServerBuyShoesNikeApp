@@ -10,5 +10,6 @@ router
 
 router
   .get('/get-available-offer', OfferController.getAvailableOfferList)
+  .get('/get-expired-offer', OfferController.getExpiredOffer)
 
 module.exports = router;

@@ -4,16 +4,17 @@ const ObjectId = Schema.ObjectId;
 
 const OrderSchema = new Schema({
     user_id: { type: ObjectId, ref: 'User' },
-    order_detail: { type: [ObjectId], ref: 'OrderDetail' },
-    address: String,
-    price: Number,
-    applied_offers: { type: [ObjectId], ref: 'Offer' },
-    phone_number: String,
-    order_date: { type: Date, default: Date.now },
-    receive_date: { type: Date, default: Date.now },
-    status: Number,
-    pay_method: Number,
-    origin_price: Number
+    order_details: { type: [ObjectId], ref: 'OrderDetail' },
+    address: { type: ObjectId, ref: 'Address' },
+    offer: { type: ObjectId, ref: 'Offer' },
+    order_date: { type: Number, default: Date.now },
+    receive_date: Number,
+    status: { type: Number, default: 0 }, // 0: đóng gói, 1: vận chuyển, 2: giao hàng, 3: đã nhận hàng, 4: hủy
+    payment_method: Number,
+    payment_complete: { type: Boolean, default: false },
+    cancel_reason: String,
+    total_price: Number,
+    sale: Number
 });
 
 const Order = mongoose.model('Order', OrderSchema);
