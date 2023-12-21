@@ -6,14 +6,15 @@ const OrderDetailController = {
         try {
             console.log(req)
             const { shoes_id, color, size, quantity } = req.body
-            const exitedOrderDetail = await OrderDetail.findOne({ user_id: req.user._id, shoes_id: shoes_id, color: color, size: size })
+            const exitedOrderDetail = await OrderDetail.findOne({ user_id: req.user._id, shoes_id: shoes_id, color: color, size: size, ordered: false })
             if (exitedOrderDetail) {
                 exitedOrderDetail.quantity += parseInt(quantity)
-                await exitedOrderDetail.save()
+                await exitedOrderDetail.save()  
                 return res.json({ success: true, message: null, data: null })
             } else {
                 const orderDetail = OrderDetail(req.body)
                 orderDetail.user_id = req.user._id
+                orderDetail.ordered = false
                 await orderDetail.save()
                 return res.json({ success: true, message: null, data: null })
             }
@@ -22,10 +23,16 @@ const OrderDetailController = {
         }
     },
 
+    createF: async (shoes_id, color, size, quantity, user_id) => {
+        const orderDetail = OrderDetail({shoes_id: shoes_id, color: color, size: size, quantity: quantity, user_id: user_id, ordered: true})
+        await orderDetail.save()
+        return orderDetail._id
+    },
+
     getOrderDetailListByUser: async (req, res) => {
         try {
             console.log(req.user._id)
-            const orderDetailList = await OrderDetail.find({ user_id: req.user._id }).populate('shoes_id')
+            const orderDetailList = await OrderDetail.find({ user_id: req.user._id, ordered: false }).populate('shoes_id')
             return res.json({ success: true, message: null, data: orderDetailList })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
@@ -45,8 +52,8 @@ const OrderDetailController = {
         }
     },
 
-    deleteF: async(id, user_id) => {
-        await OrderDetail.findOneAndDelete({ _id: id, user_id: user_id })
+    updateToOrdered: async(id, user_id) => {
+        await OrderDetail.findOneAndUpdate({ _id: id, user_id: user_id }, {ordered: true})
     },
 
     update: async (req, res) => {

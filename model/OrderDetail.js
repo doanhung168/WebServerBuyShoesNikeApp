@@ -8,6 +8,7 @@ const OrderDetailSchema = new Schema({
     size: Number,
     color: String,
     quantity: Number,
+    ordered: {type: Boolean, default: false},
     created_date: {type: Number, default: Date.now()}
 })
 const OrderDetail = mongoose.model('OrderDetail', OrderDetailSchema);
