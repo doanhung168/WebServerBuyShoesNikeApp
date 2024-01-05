@@ -20,7 +20,8 @@ const offerRouter = require('./routes/api/offer')
 const addressRouter = require('./routes/api/address')
 const orderDetailRouter = require('./routes/api/order_detail')
 const orderRouter = require('./routes/api/order')
-
+const notificationRouter = require('./routes/api/notification')
+const tokenRouter = require('./routes/api/token')
 
 
 // connect database
@@ -56,7 +57,8 @@ app.use('/offer', offerRouter)
 app.use('/address', addressRouter)
 app.use('/order-detail', orderDetailRouter)
 app.use('/order', orderRouter)
-
+app.use('/notification',notificationRouter)
+app.use('/token',tokenRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

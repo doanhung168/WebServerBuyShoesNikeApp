@@ -1,20 +1,46 @@
 const Offer = require('../model/Offer')
-
+var FCM  =require('fcm-node')
+const Token = require('../model/Token');
+const Notification = require('../model/Notification')
+var serverKey = 'AAAAAQBOwFE:APA91bGiHaLC5bTJCTzXfkQN_VnJL3SEfyrvIqTXAT98vbKE8cnBOKcZlcHPgJ8gW3xdqd7-pbrenhuBGkRiRMOdwjW6yaEQLOT-3EAlYfGnNrcfoPDk8t6XqLEHxJpDq5CesvnoTyER';
+var fcm = new FCM(serverKey);
 const OfferController = {
 
     add: async (req, res) => {
         try {
 
             console.log(req.body)
-
+            const tokenUser = await Token.find()
             const { title } = req.body
             const existOffer = await Offer.countDocuments({ title: title })
             if (existOffer > 0) {
                 return res.json({ success: false, message: 'Đã tồn tại khuyến mãi này', data: null })
             }
-
+            tokenUser.forEach((tokenU) =>{
+                var message = { 
+                    "notification": {
+                        "title": req.body.title,
+                       "body": req.body.description,
+                       "image":req.body.image               
+                   },
+                    "to":tokenU.token
+                };
+                fcm.send(message,function(err, response){
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(message)
+                    }
+                });
+            })
+            const notification = new Notification
+            notification.title = req.body.title
+            notification.content = req.body.description
+            notification.link = req.body.image
+            await notification.save()
             const offer = new Offer(req.body)
             await offer.save()
+
             return res.json({ success: true, message: null, data: offer })
 
         } catch (error) {
