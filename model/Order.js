@@ -14,7 +14,7 @@ const OrderSchema = new Schema({
     payment_complete: { type: Boolean, default: false },
     cancel_reason: String,
     total_price: Number,
-    sale: Number
+    sale: Number,
 });
 
 const Order = mongoose.model('Order', OrderSchema);

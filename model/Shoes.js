@@ -7,6 +7,7 @@ const ShoesSchema = new Schema({
   description: String,
   price: Number,
   type: {type: ObjectId, ref: 'ShoesType'},
+  number_of_reviews: {type: Number, default: 0},
   rate: {type: Number, default: 0},
   sold: {type: Number, default: 0},
   available_sizes: [Number],

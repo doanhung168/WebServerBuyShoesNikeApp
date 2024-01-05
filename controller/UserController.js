@@ -191,6 +191,11 @@ const UserController = {
         }
     },
 
+    removeOffer: async (user_id, offer_id) => {
+        const result = await User.findOneAndUpdate({_id: user_id}, {$pull: {offers: offer_id}}, {new: true})
+        console.log(result)
+    },
+
     getFavoriteShoesOfUser: async (req, res) => {
         try {
             const shoes = await User.findById(req.user._id, { favorite_shoes: 1 })
