@@ -15,7 +15,6 @@ const UserSchema = new Schema({
   state: { type: Number, default: 1 }, // 0: inactive, 1: active, 2: block
   authen_code: { type: Number, default: -1 },
   avatar: String,
-  offers: { type: [ObjectId], ref: 'Offer' },
   created_date: { type: Number, default: Date.now },
 });
 

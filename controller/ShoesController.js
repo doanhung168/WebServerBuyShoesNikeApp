@@ -115,7 +115,7 @@ const ShoesController = {
             }
 
         } catch (error) {
-            return res.json({ success: false, message: error, data: null })
+            return res.json({ success: false, message: error.message, data: null })
         }
     },
 
@@ -132,7 +132,7 @@ const ShoesController = {
                 return res.json({ success: false, message: 'Không tìm thấy giày này.', data: null })
             }
         } catch (error) {
-            return res.json({ success: false, message: e.message, data: null })
+            return res.json({ success: false, message: error.message, data: null })
         }
     },
 
@@ -168,8 +168,25 @@ const ShoesController = {
             const shoesList = await Shoes.find(filter).sort(_sort)
             return res.json({ success: true, message: null, data: shoesList })
         } catch (error) {
-            return res.json({ success: false, message: e.message, data: null })
+            return res.json({ success: false, message: error.message, data: null })
         }
+    },
+
+    increaseShoesSold: async (id, quantity) => {
+        console.log(id)
+        const shoes = await Shoes.findById(id)
+        shoes.sold = shoes.sold + quantity
+        await shoes.save()
+        return shoes
+    },
+
+    updateReviewShoes: async (shoesId, star) => {
+        const shoes = await Shoes.findById(shoesId)
+        const rate = shoes.rate
+        const numberOfReviewers = shoes.number_of_reviews
+        const newRate = ((rate * numberOfReviewers) + star) / (numberOfReviewers + 1)
+        const newNumberOfReviews = shoes.number_of_reviews + 1
+        await Shoes.findByIdAndUpdate(shoesId, {rate: newRate, number_of_reviews: newNumberOfReviews})
     }
 
 }
