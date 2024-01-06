@@ -31,7 +31,7 @@ function createItemUI(element) {
 
     $('#order-detail').append(
         `<div class="col" id="order-item-list-${element._id}">
-            <i><b style="font-size: 14px;"><a style="color: blue" href="/_order-detail/${element._id}">#${element._id}</a></b></i>
+            <i><b style="font-size: 14px;"><a style="color: blue" href="#">#${element._id}</a></b></i>
             ${orderDetailString}
             <p class="mt-2">Địa chỉ: ${element.address.address}</p>
             <p class="mt-2">Số điện thoại: ${element.address.phone_number}</p>
