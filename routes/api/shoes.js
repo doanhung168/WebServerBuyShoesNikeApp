@@ -4,6 +4,7 @@ var router = express.Router();
 const ShoesController = require('../../controller/ShoesController')
 
 router
+  .get('/countShoes', ShoesController.countShoes)
   .get('/shoes-by-name', ShoesController.getShoesByName)
 
 router
