@@ -13,6 +13,7 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage }).array('shoes_images')
+const uploadAvatar = multer({storage: storage}).single('image')
 
 function getPath(path) {
     const paths = path.split("\\")
@@ -80,9 +81,13 @@ const ImageController = {
             
         }
 
+    },
+    
+    addAvatar: async() => {
+
     }
 
 
 }
 
-module.exports = ImageController
+module.exports = {ImageController, uploadAvatar}

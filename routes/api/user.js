@@ -20,12 +20,14 @@ router
     .post('/offer', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.addOffer)
 
 router
-    .get('/favorite-shoes', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.getFavoriteShoesOfUser)
-    .post('/favorite-shoes', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.getFavoriteShoesOfUser)
-    .delete('/favorite-shoes/:id', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.getFavoriteShoesOfUser)
+    .get('/checkFavoriteShoes', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.checkFavoriteShoes)
+    .get('/getFavoriteShoes', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.getFavoriteShoesOfUser)
+    .post('/addFavoriteShoes', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.addFavoriteShoes)
 
 
 router.get('/countNewUser', UserController.countNewUser)
+    .get('/getUserInfo', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.getUserInfo)
+    .put('/updateUserInfo', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.updateUserInfo)
     .get('/', UserController.get)
 
 module.exports = router;

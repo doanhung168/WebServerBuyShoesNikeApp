@@ -16,6 +16,10 @@ const UserSchema = new Schema({
   authen_code: { type: Number, default: -1 },
   avatar: String,
   created_date: { type: Number, default: Date.now },
+  full_name: String,
+  birth_day: Number, 
+  phone_number: String,
+  gender: Number, // 0: undefine, 1: Male, 2: Female
 });
 
 UserSchema.pre('save', async function (next) {
