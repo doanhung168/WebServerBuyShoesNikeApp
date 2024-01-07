@@ -20,7 +20,8 @@ const ShoesSchema = new Schema({
   quantity: Number,
   discount_quantity: Number,
   discount_unit: Number, // 0: %, 1: vnđ
-  discounted_price: Number
+  discounted_price: Number,
+  final_price: Number
 });
 
 const Shoes = mongoose.model('Shoes', ShoesSchema);
