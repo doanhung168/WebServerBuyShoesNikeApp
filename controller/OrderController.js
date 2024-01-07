@@ -3,7 +3,11 @@ const OrderDetailController = require('../controller/OrderDetailController')
 const UserController = require('../controller/UserController')
 const UserOfferController = require('../controller/UserOfferController')
 const ShoesController = require('../controller/ShoesController')
-
+var FCM  =require('fcm-node')
+const Token = require('../model/Token')
+const Notification = require('../model/Notification');
+var serverKey = 'AAAAAQBOwFE:APA91bGiHaLC5bTJCTzXfkQN_VnJL3SEfyrvIqTXAT98vbKE8cnBOKcZlcHPgJ8gW3xdqd7-pbrenhuBGkRiRMOdwjW6yaEQLOT-3EAlYfGnNrcfoPDk8t6XqLEHxJpDq5CesvnoTyER';
+var fcm = new FCM(serverKey);
 const OrderController = {
 
     create: async (req, res) => {
@@ -138,8 +142,52 @@ const OrderController = {
     update: async (req, res) => {
         try {
             const updated = await Order.findByIdAndUpdate(req.body.id, req.body, { new: true })
-            console.log(updated)
-            return res.json({ success: true, message: null, data: null })
+            const tokenUser = await Token.where({userId:req.body.user_id})
+            var StrStatus =""
+            if(req.body.status ==0){
+                StrStatus="đang đóng gói"
+            }else if(req.body.status==1){
+                StrStatus ="đang vận chuyển"
+            }else if(req.body.status==2){
+                StrStatus ="đang giao hàng"
+            }else if(req.body.status==3){
+                StrStatus ="đã nhận hàng"
+            }else{
+                StrStatus ="đã hủy"
+            }
+            console.log(StrStatus);
+            tokenUser.forEach((tonkenU) =>{
+                console.log(tonkenU);
+                var message = { 
+                    "notification": {
+                        "title":"Trạng thái đơn hàng",
+                       "body": "Đơn Hàng "+req.body.id+StrStatus,               
+                   },
+                   "data":{
+                    "id":req.body.id,
+                    "type":"1"
+                   },
+                    "to":tonkenU.token
+                };
+                fcm.send(message, async function(err, response){
+                    if (err) {
+                        console.log(err);
+                    } else {
+                      console.log(message); 
+                    }
+                });
+                
+            }) 
+            const notification = new Notification
+                notification.title = "Trạng thái đơn hàng"
+                notification.content ="Đơn hàng "+updated._id+" "+ StrStatus
+                notification.link = req.body.id
+                notification.type = 1
+                notification.id_user = req.body.user_id
+                await notification.save()
+                console.log(updated)
+                return res.json({ success: true, message: null, data: notification })
+           
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
@@ -148,12 +196,44 @@ const OrderController = {
     completeOrder: async (req, res) => {
         try {
             const updated = await Order.findByIdAndUpdate(req.body.id, {status: '3'}, { new: true }).populate('order_details')
+            const tokenUser = await Token.where({userId:updated.user_id})
+
             if(updated) {
                 console.log(updated)
                 updated.order_details.forEach(async element => {
                     await ShoesController.increaseShoesSold(element.shoes_id, element.quantity)
                     await OrderDetailController.updateReviewStatus(element._id, {evaluated: 1})
                 });
+                tokenUser.forEach((tonkenU) =>{
+                    console.log(tonkenU);
+                    var message = { 
+                        "notification": {
+                            "title":"Trạng thái đơn hàng",
+                           "body": "Đơn Hàng "+StrStatus,               
+                       },
+                       "data":{
+                        "id":req.body.id,
+                        "type":"1"
+                       },
+                        "to":tonkenU.token
+                    };
+                    fcm.send(message, async function(err, response){
+                        if (err) {
+                            console.log(err);
+                        } else {
+                          console.log(message); 
+                        }
+                    });
+                    
+                }) 
+                const notification = new Notification
+                notification.title = "Trạng thái đơn hàng"
+                notification.content ="Đơn hàng thành công"
+                notification.link = updated._id
+                notification.type = 2
+                notification.id_user = updated.user_id
+                await notification.save()
+                
                 return res.json({ success: true, message: null, data: null })
             } else {
                 return res.json({ success: false, message: "Không tìm thấy đơn hàng", data: null })

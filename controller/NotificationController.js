@@ -12,25 +12,31 @@ const NotificationController ={
                 var message = { 
                     "notification": {
                         "title": req.body.title,
-                       "body": req.body.content,
+                        "body": req.body.content,
                        "image":req.body.image                
+                   },
+                   "data":{
+                    "id":"123",
+                    "type":"0"
                    },
                     "to":tonkenU.token
                 };
-                fcm.send(message, function(err, response){
+                fcm.send(message,async function(err, response){
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log(message);
+                        console.log("succses");
+                        const notification = new Notification
+                        notification.title = req.body.title
+                        notification.content = req.body.content
+                        notification.link = req.body.image
+                        await notification.save()   
+                        return res.json({ success: true, message:null, data: message })
                     }
-                });
+                });  
             })  
-            const notification = new Notification
-            notification.title = req.body.title
-            notification.content = req.body.content
-            notification.link = req.body.image
-            await notification.save()   
-            return res.json({ success: true, message:null, data: message })
+           
+          
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
@@ -42,9 +48,23 @@ const NotificationController ={
             return res.json({ success: true, message:null, data: notification })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
+        } 
+    },
+    getByIdUser:async(req,res)=>{
+        try {
+            const notification = await Notification.find({id_user:req.params.id_user})
+            return res.json({ success: true, message:null, data: notification })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
         }
-        
-        
+    },
+    getNotificationOffer:async(req,res)=>{
+        try {
+            const notification = await Notification.find({type:0})
+            return res.json({ success: true, message:null, data: notification })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
     }
 
 }
