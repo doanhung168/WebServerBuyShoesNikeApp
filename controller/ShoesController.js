@@ -176,6 +176,7 @@ const ShoesController = {
         console.log(id)
         const shoes = await Shoes.findById(id)
         shoes.sold = shoes.sold + quantity
+        shoes.quantity = shoes.quantity - quantity
         await shoes.save()
         return shoes
     },
@@ -187,6 +188,15 @@ const ShoesController = {
         const newRate = ((rate * numberOfReviewers) + star) / (numberOfReviewers + 1)
         const newNumberOfReviews = shoes.number_of_reviews + 1
         await Shoes.findByIdAndUpdate(shoesId, {rate: newRate, number_of_reviews: newNumberOfReviews})
+    },
+
+    countShoes: async (req, res) => {
+        try {
+            const result = await Shoes.count()
+            return res.json({ success: true, message: null, data: result })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
     }
 
 }

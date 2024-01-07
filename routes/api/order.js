@@ -8,6 +8,7 @@ require('../../middleware/passport')
 const OrderController = require('../../controller/OrderController')
 
 router
+    .get('/getOrderForEnvenue', OrderController.getOrderForEnvenue)
     .get('/getById', OrderController.getById)
     .get('/getById', passport.authenticate(Constraint.JWT, { session: false }, null), OrderController.getById)
     .get('/getByStatus', passport.authenticate(Constraint.JWT, { session: false }, null), OrderController.getByStatus)

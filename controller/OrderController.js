@@ -100,7 +100,7 @@ const OrderController = {
 
     getByStatus: async (req, res) => {
         try {
-            const status = req.query
+            const { status } = req.query
             const orders = Order.find({ status: status }).populate('address')
                 .populate('offer')
                 .populate({
@@ -195,21 +195,21 @@ const OrderController = {
 
     completeOrder: async (req, res) => {
         try {
-            const updated = await Order.findByIdAndUpdate(req.body.id, {status: '3'}, { new: true }).populate('order_details')
+            const updated = await Order.findByIdAndUpdate(req.body.id, { status: 3, receive_date: Date.now() }, { new: true }).populate('order_details')
             const tokenUser = await Token.where({userId:updated.user_id})
 
-            if(updated) {
+            if (updated) {
                 console.log(updated)
                 updated.order_details.forEach(async element => {
                     await ShoesController.increaseShoesSold(element.shoes_id, element.quantity)
-                    await OrderDetailController.updateReviewStatus(element._id, {evaluated: 1})
+                    await OrderDetailController.updateReviewStatus(element._id, { evaluated: 1 })
                 });
                 tokenUser.forEach((tonkenU) =>{
                     console.log(tonkenU);
                     var message = { 
                         "notification": {
                             "title":"Trạng thái đơn hàng",
-                           "body": "Đơn Hàng "+StrStatus,               
+                           "body": "Đơn Hàng "+updated._id+" "+StrStatus,               
                        },
                        "data":{
                         "id":req.body.id,
@@ -238,7 +238,7 @@ const OrderController = {
             } else {
                 return res.json({ success: false, message: "Không tìm thấy đơn hàng", data: null })
             }
-            
+
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
@@ -253,7 +253,18 @@ const OrderController = {
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
-    }
+    },
+
+    getOrderForEnvenue: async (req, res) => {
+        try {
+            const { start_time, end_time } = req.query
+            const result = await Order.find({ status: 3, receive_date: { $gte: start_time, $lte: end_time } }, { _id: 1, total_price: 1, receive_date: 1 })
+                .sort({ order_date: -1 })
+            return res.json({ success: true, message: null, data: result })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
 
 }
 

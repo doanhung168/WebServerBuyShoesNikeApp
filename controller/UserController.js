@@ -207,6 +207,25 @@ const UserController = {
         }
     },
 
+    countNewUser: async (req, res) => {
+        try {
+            const { start_time, end_time } = req.query
+            const result = await User.count({created_date: { $gte: start_time, $lte: end_time }})
+            return res.json({ success: true, message: null, data: result })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    get: async(req, res) => {
+        try {
+            const { start_time, end_time } = req.query
+            const result = await User.find({created_date: { $gte: start_time, $lte: end_time }}, {_id: 1, name: 1, created_date: 1}).sort({created_date: -1})
+            return res.json({ success: true, message: null, data: result })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    }
 
 }
 

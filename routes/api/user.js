@@ -24,4 +24,8 @@ router
     .post('/favorite-shoes', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.getFavoriteShoesOfUser)
     .delete('/favorite-shoes/:id', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.getFavoriteShoesOfUser)
 
+
+router.get('/countNewUser', UserController.countNewUser)
+    .get('/', UserController.get)
+
 module.exports = router;
