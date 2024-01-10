@@ -45,15 +45,16 @@
                         </div>
                         <div class="mb-3">
                             <label for="shoes_discount" class="form-label fw-bolder">Giảm giá</label>
-                            <input class="form-control" id="shoes_discount" type="number" value="0"  placeholder="Giảm giá của giày ..."></input>
-                          </div>
-                          <div class="mb-3">
+                            <input class="form-control" id="shoes_discount" type="number" value="0"
+                                placeholder="Giảm giá của giày ..."></input>
+                        </div>
+                        <div class="mb-3">
                             <label for="discount_unit" class="form-label fw-bolder">Đơn vị giảm giá</label>
                             <select class="form-select" id="discount_unit" required>
                                 <option selected value="0">%</option>
                                 <option value="1">VNĐ</option>
                             </select>
-                          </div>
+                        </div>
                         <div class="mb-3">
                             <label for="shoes_type" class="form-label fw-bolder">Loại giày</label>
                             <select class="form-select" id="shoes_type">
@@ -107,8 +108,9 @@
 
                         <div class="mb-3">
                             <label for="shoes_quantity" class="form-label fw-bolder">Số lượng giày</label>
-                            <input class="form-control" id="shoes_quantity" type="number" min="1" placeholder="Số lượng giày hiện có..."></input>
-                          </div>
+                            <input class="form-control" id="shoes_quantity" type="number" min="1"
+                                placeholder="Số lượng giày hiện có..."></input>
+                        </div>
 
                         <div class="mb-3">
                             <label for="shoes_state" class="form-label fw-bolder">Trạng thái</label>
@@ -185,6 +187,23 @@
             </div>
         </div>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.8//firebase-storage.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCc-VYCEXHBgrvqcFtRl20ZSiu4bdMRZNA",
+            authDomain: "nikeshoes-37058.firebaseapp.com",
+            projectId: "nikeshoes-37058",
+            storageBucket: "nikeshoes-37058.appspot.com",
+            messagingSenderId: "4300128337",
+            appId: "1:4300128337:web:c5f32d4aaf258096827870",
+            measurementId: "G-F9E07RDGF3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="/javascripts/shoes/load_shoes_detail.js"></script>

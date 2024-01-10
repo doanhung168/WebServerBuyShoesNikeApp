@@ -2,46 +2,37 @@ $('#offer-image').click(function (e) {
     $('#image_input').click()
 });
 
-$('#image_input').change(function (e) {
-    e.preventDefault();
-    const formData = new FormData($('#image_form')[0])
+$('#image_input').on('change', function () {
+    var selectedFile = this.files[0];
+    uploadImage(selectedFile)
+})
 
-    $.ajax({
-        url: '/shoes_image/',
-        data: formData,
-        dataType: 'json',
-        type: 'POST',
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            if (data.success) {
-                data.data.forEach(element => {
-                    $('#offer-image').attr('src', `${element}`)
-                });
-            } else {
-                alert(data.message)
-            }
-        },
-        error: function (xhr, status, error) {
-            alert('Error: ' + error.message);
-        }
-    })
-});
+function uploadImage(file) {
+    const ref = firebase.storage().ref()
+    const metadata = {
+        contentType: file.type
+    }
+    const name = file.name
+    const uploadImg = ref.child(`offer-images/${name}-${Date.now()}`).put(file, metadata)
+    uploadImg.then(snapshot => snapshot.ref.getDownloadURL())
+        .then(url => {
+            removePreviousImage()
+            $('#offer-image').attr('src', `${url}`)
+        })
+        .catch((err) => console.log(err))
+}
 
 function removePreviousImage() {
     const imageSrc = $('#offer-image').attr('src')
-    if(imageSrc != '/images/placeholder.png') {
-        $.ajax({
-            url: '/shoes_image/',
-            data: { src: imageSrc },
-            type: 'DELETE',
-            success: function (data) {
-                console.log('delete image successful')
-            },
-            error: function (xhr, status, error) {
-                alert('Error: ' + error);
-            }
-        })
+    if (imageSrc != '/images/placeholder.png') {
+        const deleteRef = firebase.storage().refFromURL(imageSrc)
+        deleteRef.delete().then(() => {
+            console.log("delete success")
+        }).catch((error) => {
+            console.log(error)
+        });
+    } else {
+        console.log('not available to delete')
     }
-   
 }
+

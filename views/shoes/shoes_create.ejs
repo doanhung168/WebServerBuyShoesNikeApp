@@ -17,7 +17,7 @@
       <div class="row" style="height: 55px;">
         <%- include('../partial/nav_bar') %>
       </div>
-      <div class="row"  id="content">
+      <div class="row" id="content">
         <div id="side-bar" class="col-2 ps-4 pt-4" style="background-color: #f7f7f7;">
           <%- include('../partial/side_bar') %>
         </div>
@@ -30,22 +30,23 @@
             </div>
             <div class="mb-3">
               <label for="shoes_description" class="form-label fw-bolder">Mô tả</label>
-              <textarea class="form-control" placeholder="Viết vài thứ về giày ..."
-                id="shoes_description" rows="5"></textarea>
+              <textarea class="form-control" placeholder="Viết vài thứ về giày ..." id="shoes_description"
+                rows="5"></textarea>
             </div>
             <div class="mb-3">
               <label for="shoes_price" class="form-label fw-bolder">Giá</label>
-              <input class="form-control" id="shoes_price" type="number"  placeholder="Giá của giày ..."></input>
+              <input class="form-control" id="shoes_price" type="number" placeholder="Giá của giày ..."></input>
             </div>
             <div class="mb-3">
               <label for="shoes_discount" class="form-label fw-bolder">Giảm giá</label>
-              <input class="form-control" id="shoes_discount" type="number" value="0"  placeholder="Giảm giá của giày ..."></input>
+              <input class="form-control" id="shoes_discount" type="number" value="0"
+                placeholder="Giảm giá của giày ..."></input>
             </div>
             <div class="mb-3">
               <label for="discount_unit" class="form-label fw-bolder">Đơn vị giảm giá</label>
               <select class="form-select" id="discount_unit" required>
-                  <option selected value="0">%</option>
-                  <option value="1">VNĐ</option>
+                <option selected value="0">%</option>
+                <option value="1">VNĐ</option>
               </select>
             </div>
             <div class="mb-3">
@@ -56,7 +57,8 @@
             </div>
             <div class="mb-3">
               <div class="d-flex align-items-center">
-                <label for="btn_add_color" class="form-label fw-bolder" style="margin-bottom: 4px;">Màu giày khả dụng</label>
+                <label for="btn_add_color" class="form-label fw-bolder" style="margin-bottom: 4px;">Màu giày khả
+                  dụng</label>
                 <i class="fa-solid fa-circle-plus ms-2" id="btn_add_color"></i>
               </div>
               <div class="mt-2" id="color_container">
@@ -65,7 +67,8 @@
             </div>
             <div class="mb-3">
               <div class="d-flex align-items-center">
-                <label for="btn_add_size" class="form-label fw-bolder" style="margin-bottom: 1px;">Size giày khả dụng</label>
+                <label for="btn_add_size" class="form-label fw-bolder" style="margin-bottom: 1px;">Size giày khả
+                  dụng</label>
                 <i class="fa-solid fa-crosshairs ms-2" id="btn_add_size" data-bs-toggle="modal"
                   data-bs-target="#exampleModal"></i>
               </div>
@@ -90,17 +93,19 @@
               <label for="gender_type" class="form-label fw-bolder">Giới tình phù hợp với giày</label>
               <select class="form-select" id="gender_type">
                 <option value="" selected>Chọn giới tính phù hợp</option>
-                <option value="0">All</option>
-                <option value="1">Male</option>
-                <option value="2">Female</option>
+                <option value="0">Tất cả</option>
+                <option value="1">Nam</option>
+                <option value="2">Nữ</option>
               </select>
             </div>
             <div class="mb-3">
               <label for="shoes_quantity" class="form-label fw-bolder">Số lượng giày</label>
-              <input class="form-control" id="shoes_quantity" type="number" min="1" placeholder="Số lượng giày hiện có..."></input>
+              <input class="form-control" id="shoes_quantity" type="number" min="1"
+                placeholder="Số lượng giày hiện có..."></input>
             </div>
             <div class="mb-3">
-              <button type="button" onclick="createShoes()" id="btn_create_shoes" class="btn btn-outline-success">Tạo giày</button>
+              <button type="button" onclick="createShoes()" id="btn_create_shoes" class="btn btn-outline-success">Tạo
+                giày</button>
             </div>
           </div>
 
@@ -154,6 +159,23 @@
       </div>
     </div>
   </div>
+  
+  <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.8//firebase-storage.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCc-VYCEXHBgrvqcFtRl20ZSiu4bdMRZNA",
+      authDomain: "nikeshoes-37058.firebaseapp.com",
+      projectId: "nikeshoes-37058",
+      storageBucket: "nikeshoes-37058.appspot.com",
+      messagingSenderId: "4300128337",
+      appId: "1:4300128337:web:c5f32d4aaf258096827870",
+      measurementId: "G-F9E07RDGF3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+  </script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="./javascripts/shoes/load_shoes_type.js"></script>
