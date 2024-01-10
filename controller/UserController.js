@@ -1,8 +1,8 @@
 const User = require('../model/User');
 const { Constraint, Jwt, EmailSender, Bcrypt } = require('../utlity')
 const { uid } = require('uid')
-const { promisify } = require('util');
 const { uploadAvatar } = require('../controller/ImageControlloer')
+const multer = require('multer')
 
 async function findValidDisplayName(displayName) {
     const random = uid(8);
@@ -111,7 +111,7 @@ const UserController = {
     },
 
     autoLogin: async (req, res) => {
-        return res.json({ success: true, message: null, data: { user: req.user } })
+        return res.json({ success: true, message: null, data: req.user })
     },
 
     forgotPassword: async (req, res) => {
@@ -165,9 +165,18 @@ const UserController = {
     },
 
     changePassword: async (req, res) => {
-        console.log(req)
+        console.log(req.body)
         const { current_password, new_password } = req.body
 
+        if (Bcrypt.compareSync(current_password, req.user.password)) {
+            const user = req.user
+            user.password = new_password
+            await user.save()
+            console.log(user)
+            return res.json({ success: true, message: null, data: null })
+        } else {
+            return res.json({ success: false, message: "Mật khẩu cũ không chính xác", data: null })
+        }
     },
 
 
@@ -272,19 +281,29 @@ const UserController = {
 
     updateUserInfo: async (req, res) => {
         try {
-            await promisify(uploadAvatar(req, res))
-            const file = req.file;
-            console.log(file)
+            console.log(req.body)
+            User.findByIdAndUpdate(req.user._id, req.body, { new: true })
+                .then(updatedDocument => {
+                    if (!updatedDocument) {
+                        return res.json({ success: false, message: "Không tìm thấy người dùng", data: null })
+                    }
 
-
-            // const result = await User.findByIdAndUpdate(req.user._id, req.body, { new: true })
-            // console.log(result)
-            // return res.json({ success: true, message: null, data: true })
+                    console.log(updatedDocument)
+                    return res.json({ success: true, message: null, data: true })
+                })
+                .catch(error => {
+                    return res.json({ success: false, message: error.message, data: null })
+                })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
     }
 
+}
+
+function getPath(path) {
+    const paths = path.split("\\")
+    return "/" + paths[1] + "/" + paths[2]
 }
 
 module.exports = UserController

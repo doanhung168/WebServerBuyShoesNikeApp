@@ -28,6 +28,7 @@ router
 router.get('/countNewUser', UserController.countNewUser)
     .get('/getUserInfo', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.getUserInfo)
     .put('/updateUserInfo', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.updateUserInfo)
+    .put('/changePassword', passport.authenticate(Constraint.JWT, { session: false }, null), UserController.changePassword)
     .get('/', UserController.get)
 
 module.exports = router;

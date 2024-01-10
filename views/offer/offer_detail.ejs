@@ -32,7 +32,8 @@
                         <i class="fw-lighter fs-" id="offer-id" data-id="<%= id %>">#<%= id%></i>
                     </div>
                     <div class="align-self-center">
-                        <button id="enable_editor" onclick="enableEditor(this)" data-enable="false" class="btn btn-outline-success">Mở trình chỉnh sửa khuyến mãi</button>
+                        <button id="enable_editor" onclick="enableEditor(this)" data-enable="false"
+                            class="btn btn-outline-success">Mở trình chỉnh sửa khuyến mãi</button>
                     </div>
                 </div>
 
@@ -69,13 +70,15 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="value_to_apply" class="form-label fw-bolder">Áp dụng khi giá trị đơn hàng lớn hơn hoặc bằng (tính theo vnđ)</label>
-                        <input class="form-control" id="value_to_apply" type="number" value="0" min="0" required></input>
+                        <label for="value_to_apply" class="form-label fw-bolder">Áp dụng khi giá trị đơn hàng lớn hơn
+                            hoặc bằng (tính theo vnđ)</label>
+                        <input class="form-control" id="value_to_apply" type="number" value="0" min="0"
+                            required></input>
                     </div>
 
                     <div class="mb-3">
                         <div class="d-flex flex-row align-content-center">
-                            <label for="max_value" class="form-label fw-bolder">Giảm tối đa (tính theo vnđ)</label>   
+                            <label for="max_value" class="form-label fw-bolder">Giảm tối đa (tính theo vnđ)</label>
                             <input class="ms-4 form-check-input" type="checkbox" id="unlimit_max_value" />
                             <label class="ms-2 form-label" style="font-size: 14px;align-self: center;"
                                 for="unlimit_max_value">Không
@@ -87,8 +90,8 @@
                     <div class="mb-3">
                         <label for="btn_add_image" class="form-label fw-bolder" style="margin-bottom: 1px ">Chọn
                             ảnh</label>
-                        <img id="offer-image" style="width: 200px; height: 200px;border: none; margin: 0; padding: 0;"
-                            class="my-1 form-control" src="/images/add_img_placeholder.png">
+                        <img id="offer-image" style="width: 300px; height: 180px;border: none; margin: 0; padding: 0;"
+                            class="my-3 form-control" src="/images/placeholder.png">
                     </div>
 
                     <div class="mb-3">
@@ -117,7 +120,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <button id="save_offer" onclick="uploadOffer()" class="btn btn-outline-success d-none">Lưu Khuyến
+                        <button id="save_offer" onclick="uploadOffer()" class="btn btn-outline-success d-none">Lưu
+                            Khuyến
                             Mãi</button>
                     </div>
                 </div>
@@ -128,13 +132,30 @@
                     <input type="file" name="shoes_images" id="image_input" />
                 </form>
 
-
-                <script src="../../javascripts/offer/number_of_offer.js"></script>
-                <script src="../../javascripts/offer/load_offer_detail.js"></script>
-
             </div>
         </div>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.8//firebase-storage.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCc-VYCEXHBgrvqcFtRl20ZSiu4bdMRZNA",
+            authDomain: "nikeshoes-37058.firebaseapp.com",
+            projectId: "nikeshoes-37058",
+            storageBucket: "nikeshoes-37058.appspot.com",
+            messagingSenderId: "4300128337",
+            appId: "1:4300128337:web:c5f32d4aaf258096827870",
+            measurementId: "G-F9E07RDGF3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+    </script>
+
+    <script src="../../javascripts/offer/image_picker.js"></script>
+    <script src="../../javascripts/offer/number_of_offer.js"></script>
+    <script src="../../javascripts/offer/load_offer_detail.js"></script>
 
 </body>
 
