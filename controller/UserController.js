@@ -1,6 +1,8 @@
 const User = require('../model/User');
 const { Constraint, Jwt, EmailSender, Bcrypt } = require('../utlity')
 const { uid } = require('uid')
+const { uploadAvatar } = require('../controller/ImageControlloer')
+const multer = require('multer')
 
 async function findValidDisplayName(displayName) {
     const random = uid(8);
@@ -109,7 +111,7 @@ const UserController = {
     },
 
     autoLogin: async (req, res) => {
-        return res.json({ success: true, message: null, data: { user: req.user } })
+        return res.json({ success: true, message: null, data: req.user })
     },
 
     forgotPassword: async (req, res) => {
@@ -163,9 +165,18 @@ const UserController = {
     },
 
     changePassword: async (req, res) => {
-        console.log(req)
+        console.log(req.body)
         const { current_password, new_password } = req.body
 
+        if (Bcrypt.compareSync(current_password, req.user.password)) {
+            const user = req.user
+            user.password = new_password
+            await user.save()
+            console.log(user)
+            return res.json({ success: true, message: null, data: null })
+        } else {
+            return res.json({ success: false, message: "Mật khẩu cũ không chính xác", data: null })
+        }
     },
 
 
@@ -192,16 +203,49 @@ const UserController = {
     },
 
     removeOffer: async (user_id, offer_id) => {
-        const result = await User.findOneAndUpdate({_id: user_id}, {$pull: {offers: offer_id}}, {new: true})
+        const result = await User.findOneAndUpdate({ _id: user_id }, { $pull: { offers: offer_id } }, { new: true })
         console.log(result)
     },
 
     getFavoriteShoesOfUser: async (req, res) => {
         try {
-            const shoes = await User.findById(req.user._id, { favorite_shoes: 1 })
-                .populate({ path: 'favorite_shoes', match: { $or: [{ state: 1 }, { state: 2 }] } })
+            const user = await User.findById(req.user._id, { favorite_shoes: 1 })
+                .populate({ path: 'favorite_shoes' })
                 .sort({ created_date: -1 })
-            return res.json({ success: true, message: null, data: shoes })
+            return res.json({ success: true, message: null, data: user.favorite_shoes })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    addFavoriteShoes: async (req, res) => {
+        try {
+            const user = req.user
+            const exists = user.favorite_shoes.includes(req.body.id)
+
+            if (exists) {
+                var result = await User.findOneAndUpdate({ _id: req.user._id }, { $pull: { favorite_shoes: req.body.id } }, { new: true })
+                console.log(result)
+                result = false
+            } else {
+                var result = await User.findOneAndUpdate({ _id: req.user._id }, { $push: { favorite_shoes: req.body.id } }, { new: true })
+                console.log(result)
+                result = true
+            }
+
+            return res.json({ success: true, message: null, data: result })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    checkFavoriteShoes: async (req, res) => {
+        try {
+            console.log(req.query.id)
+            const user = req.user
+            const result = user.favorite_shoes.includes(req.query.id)
+            console.log(result)
+            return res.json({ success: true, message: null, data: result })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
@@ -210,23 +254,56 @@ const UserController = {
     countNewUser: async (req, res) => {
         try {
             const { start_time, end_time } = req.query
-            const result = await User.count({created_date: { $gte: start_time, $lte: end_time }})
+            const result = await User.count({ created_date: { $gte: start_time, $lte: end_time } })
             return res.json({ success: true, message: null, data: result })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
     },
 
-    get: async(req, res) => {
+    get: async (req, res) => {
         try {
             const { start_time, end_time } = req.query
-            const result = await User.find({created_date: { $gte: start_time, $lte: end_time }}, {_id: 1, name: 1, created_date: 1}).sort({created_date: -1})
+            const result = await User.find({ created_date: { $gte: start_time, $lte: end_time } }, { _id: 1, name: 1, created_date: 1 }).sort({ created_date: -1 })
             return res.json({ success: true, message: null, data: result })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    getUserInfo: async (req, res) => {
+        try {
+            return res.json({ success: true, message: null, data: req.user })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    updateUserInfo: async (req, res) => {
+        try {
+            console.log(req.body)
+            User.findByIdAndUpdate(req.user._id, req.body, { new: true })
+                .then(updatedDocument => {
+                    if (!updatedDocument) {
+                        return res.json({ success: false, message: "Không tìm thấy người dùng", data: null })
+                    }
+
+                    console.log(updatedDocument)
+                    return res.json({ success: true, message: null, data: true })
+                })
+                .catch(error => {
+                    return res.json({ success: false, message: error.message, data: null })
+                })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
     }
 
+}
+
+function getPath(path) {
+    const paths = path.split("\\")
+    return "/" + paths[1] + "/" + paths[2]
 }
 
 module.exports = UserController

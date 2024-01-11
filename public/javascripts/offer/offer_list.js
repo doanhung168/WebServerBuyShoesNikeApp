@@ -19,8 +19,8 @@ function loadOfferList() {
 function createOneUI(element) {
     $('#offer-list').append(
         `<div class="offer-item d-flex flex-row mb-3 bg-light border-1 p-3">
-        <img src="..${element.image}" style="width: 150px; height: 150px;">
-        <div class="d-flex flex-column justify-content-top ms-3">
+        <img src="${element.image}" style="width: 300px; height: 180px;">
+        <div class="d-flex flex-column justify-content-top ms-5">
             <p><b>Tiêu đề: </b><span>${element.title}</span></p>
             <p><b>Khuyến mãi: </b><span>${element.discount}${element.discount_unit == 0? '%': ' VNĐ'}</span></p>
             <p><b>Áp dụng với đơn hàng có giá trị lớn hơn hoặc bằng: </b><span>${element.value_to_apply} VNĐ </span></p>

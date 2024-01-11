@@ -5,8 +5,6 @@ const { Bcrypt, Constraint } = require('../utlity')
 
 const UserSchema = new Schema({
   name: String,
-  orders: { type: [ObjectId], ref: 'Order' },
-  cart: {type: [ObjectId], ref: 'OrderDetail'},
   favorite_shoes: { type: [ObjectId], ref: 'Shoes' },
   email: String,
   password: String,
@@ -16,6 +14,10 @@ const UserSchema = new Schema({
   authen_code: { type: Number, default: -1 },
   avatar: String,
   created_date: { type: Number, default: Date.now },
+  full_name: String,
+  birthday: Number, 
+  phone_number: String,
+  gender: Number, // 0: undefine, 1: Male, 2: Female
 });
 
 UserSchema.pre('save', async function (next) {

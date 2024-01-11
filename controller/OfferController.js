@@ -37,7 +37,7 @@ const OfferController = {
             const notification = new Notification
             notification.title = req.body.title
             notification.content = req.body.description
-            notification.link = offer_id
+            notification.link = offer._id
             await notification.save()
            
             await offer.save()

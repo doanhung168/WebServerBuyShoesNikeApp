@@ -12,7 +12,18 @@ const storage = multer.diskStorage({
     }
 })
 
+const avatarStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/images')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, "avatar-" + uniqueSuffix + path.extname(file.originalname))
+    }
+})
+
 const upload = multer({ storage: storage }).array('shoes_images')
+const uploadAvatar = multer({storage: avatarStorage}).single('image')
 
 function getPath(path) {
     const paths = path.split("\\")
@@ -82,7 +93,6 @@ const ImageController = {
 
     }
 
-
 }
 
-module.exports = ImageController
+module.exports = {ImageController, uploadAvatar}

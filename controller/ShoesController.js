@@ -11,6 +11,15 @@ const ShoesController = {
             }
 
             const shoes = new Shoes(req.body)
+
+            const price = parseInt(shoes.price)
+
+            if(shoes.discount_unit == '0') {
+                shoes.final_price = price - (price * parseInt(shoes.discount_quantity) / 100)
+            } else {
+                shoes.final_price = price - parseInt(shoes.discount_quantity)
+            }
+
             await shoes.save()
             return res.json({ success: true, message: null, data: shoes })
         } catch (e) {
@@ -126,6 +135,16 @@ const ShoesController = {
             delete req.body.id
 
             const updatedShoes = await Shoes.findByIdAndUpdate(id, req.body, { new: true })
+
+            const price = parseInt(updatedShoes.price)
+
+            if(updatedShoes.discount_unit == '0') {
+                updatedShoes.final_price = price - (price * parseInt(updatedShoes.discount_quantity) / 100)
+            } else {
+                updatedShoes.final_price = price - parseInt(updatedShoes.discount_quantity)
+            }
+            await updatedShoes.save()
+
             if (updatedShoes) {
                 return res.json({ success: true, message: null, data: updatedShoes })
             } else {
@@ -144,7 +163,7 @@ const ShoesController = {
 
             const filter = {
                 name: { $regex: name, $options: 'i' },
-                price: { $gte: min_price, $lte: max_price }
+                final_price: { $gte: min_price, $lte: max_price }
             }
 
             if (gender != null) {
@@ -160,9 +179,9 @@ const ShoesController = {
             }
 
             if (sort == "Popular") {
-                _sort = { sold: 1 }
+                _sort = { sold: -1 }
             } else {
-                _sort = { created_date: 1 }
+                _sort = { created_date: -1 }
             }
 
             const shoesList = await Shoes.find(filter).sort(_sort)
