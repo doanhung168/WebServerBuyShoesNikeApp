@@ -179,9 +179,9 @@ const ShoesController = {
             }
 
             if (sort == "Popular") {
-                _sort = { sold: 1 }
+                _sort = { sold: -1 }
             } else {
-                _sort = { created_date: 1 }
+                _sort = { created_date: -1 }
             }
 
             const shoesList = await Shoes.find(filter).sort(_sort)
