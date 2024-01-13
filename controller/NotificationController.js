@@ -3,11 +3,11 @@ const Token = require('../model/Token')
 const Notification = require('../model/Notification');
 const NotificationController ={
     pushNoti:async(req,res) =>{
-        console.log("den day");
         try {
             var serverKey = 'AAAAAQBOwFE:APA91bGiHaLC5bTJCTzXfkQN_VnJL3SEfyrvIqTXAT98vbKE8cnBOKcZlcHPgJ8gW3xdqd7-pbrenhuBGkRiRMOdwjW6yaEQLOT-3EAlYfGnNrcfoPDk8t6XqLEHxJpDq5CesvnoTyER';
             var fcm = new FCM(serverKey);
             const tokenUser = await Token.where({userId:req.body.userId})
+            console.log(tokenUser);
             tokenUser.forEach((tonkenU) =>{
                 var message = { 
                     "notification": {
@@ -25,12 +25,7 @@ const NotificationController ={
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log("succses");
-                        const notification = new Notification
-                        notification.title = req.body.title
-                        notification.content = req.body.content
-                        notification.link = req.body.image
-                        await notification.save()   
+                        console.log("check notification succses"); 
                         return res.json({ success: true, message:null, data: message })
                     }
                 });  
@@ -83,7 +78,7 @@ const NotificationController ={
     getQuantityNotification:async(req,res)=>{
         try{
             const numberNotificationIdU = await Notification.countDocuments({link:req.params.idU,seen:false})
-            const numberNotificationSale = await Notification.countDocuments({type:1,seen:false})
+            const numberNotificationSale = await Notification.countDocuments({type:0,seen:false})
             var count = numberNotificationIdU+numberNotificationSale
             return res.json({ success: true, message:"Success", data: count })
         }catch (error) {
