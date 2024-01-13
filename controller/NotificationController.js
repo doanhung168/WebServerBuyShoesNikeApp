@@ -65,6 +65,30 @@ const NotificationController ={
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
+    },
+    updateSeenNotification:async(req,res)=>{
+        try {
+            const notification = await Notification.findById(req.params.idN)
+            if(notification!=null){
+                await Notification.findByIdAndUpdate(req.params.idN,{seen:true})
+                return res.json({ success: true, message:"Success", data: null })
+
+            }else{
+                return res.json({ success: false, message: 'Notification ko ton tai', data: null })
+            }
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+    getQuantityNotification:async(req,res)=>{
+        try{
+            const numberNotificationIdU = await Notification.countDocuments({link:req.params.idU,seen:false})
+            const numberNotificationSale = await Notification.countDocuments({type:1,seen:false})
+            var count = numberNotificationIdU+numberNotificationSale
+            return res.json({ success: true, message:"Success", data: count })
+        }catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
     }
 
 }

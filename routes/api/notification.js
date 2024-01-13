@@ -7,4 +7,6 @@ router
     .get('/',NotificationController.get)
     .get('/get-by-id-user/:id_user',NotificationController.getByIdUser)
     .get('/get-notification-offer',NotificationController.getNotificationOffer)
+    .put('/:idN',NotificationController.updateSeenNotification)
+    .get('/get-quantity-notification/:idU',NotificationController.getQuantityNotification)
 module.exports = router;
