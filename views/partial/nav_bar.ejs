@@ -1,4 +1,16 @@
 <div class="col-2 bg-dark d-flex align-items-center ps-4">
-    <p style="cursor: pointer; color: #6c757d; font-weight: bolder; font-size: larger;">NIKE SHOES</p>
+    <p style="cursor: pointer; color: #6c757d; font-weight: bolder; font-size: larger;">NIKE</p>
 </div>
-<div class="col-10" style="background-color: #6c757d;"></div>
+<div class="col-9" style="background-color: #6c757d;"></div>
+<div class="col-1 bg-dark d-flex align-items-center ps-4">
+    <p style="cursor: pointer; color: #6c757d; font-weight: bolder; font-size: medium;" onclick="logout()">Đăng xuất</p>
+</div>
+
+<script>
+    function logout() {
+        if (confirm("Bạn có muốn đăng xuất?")) {
+            document.cookie = "login=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+            window.location.replace('/')
+        }
+    }
+</script>

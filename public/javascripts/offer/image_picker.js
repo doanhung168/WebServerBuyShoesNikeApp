@@ -16,7 +16,11 @@ function uploadImage(file) {
     const uploadImg = ref.child(`offer-images/${name}-${Date.now()}`).put(file, metadata)
     uploadImg.then(snapshot => snapshot.ref.getDownloadURL())
         .then(url => {
-            removePreviousImage()
+            try {
+                removePreviousImage()
+            } catch(error) {
+                console.log(error)
+            }
             $('#offer-image').attr('src', `${url}`)
         })
         .catch((err) => console.log(err))
