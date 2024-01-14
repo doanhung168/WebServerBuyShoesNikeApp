@@ -183,7 +183,7 @@ const OrderController = {
                 notification.content ="Đơn hàng "+updated._id+" "+ StrStatus
                 notification.link = req.body.id
                 notification.type = 1
-                notification.id_user = req.body.user_id
+                notification.id_user = updated.user_id
                 await notification.save()
                 console.log(updated)
                 return res.json({ success: true, message: null, data: notification })
@@ -230,7 +230,7 @@ const OrderController = {
                 notification.title = "Trạng thái đơn hàng"
                 notification.content ="Đơn hàng thành công"
                 notification.link = updated._id
-                notification.type = 2
+                notification.type = 1
                 notification.id_user = updated.user_id
                 await notification.save()
                 
