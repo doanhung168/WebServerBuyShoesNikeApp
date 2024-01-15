@@ -34,16 +34,14 @@ const OfferController = {
                 });
             })
              const offer = new Offer(req.body)
+             await offer.save()
             const notification = new Notification
             notification.title = req.body.title
             notification.content = req.body.description
-            notification.link = req.body.image
+            notification.link = offer._id
+            console.log(offer._id);
             await notification.save()
-           
-            await offer.save()
-
             return res.json({ success: true, message: null, data: offer })
-
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
