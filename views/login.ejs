@@ -40,11 +40,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
     $('#btnLogin').click(() => {
-        if($('#password').val() == 'admin' && $('#username').val() == "admin") {
-            window.location.href = "/shoes-list"
-        } else {
-            alert("Tên đăng nhập hoặc mật khẩu không đúng")
+
+        if($('#username').val() == null) {
+            alert("Vui lòng nhập tên đăng nhập")
+            return
         }
+
+        if($('#password').val() == null) {
+            alert("Vui lòng nhập mật khẩu")
+            return
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/login",
+            data: {user_name: $('#username').val(), password: $('#password').val()},
+            success: function (response) {
+                if(response.success) {
+                    window.location.href = "/shoes-list"
+                } else {
+                    alert(response.message)
+                }
+            }
+        });
     })
 
 </script>
