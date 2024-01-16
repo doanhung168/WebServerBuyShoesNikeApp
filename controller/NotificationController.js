@@ -77,8 +77,10 @@ const NotificationController ={
     },
     getQuantityNotification:async(req,res)=>{
         try{
-            const numberNotificationIdU = await Notification.countDocuments({link:req.params.idU,seen:false})
+            const numberNotificationIdU = await Notification.countDocuments({id_user:req.params.idU,seen:false})
             const numberNotificationSale = await Notification.countDocuments({type:0,seen:false})
+            console.log(numberNotificationIdU);
+            console.log(numberNotificationSale);
             var count = numberNotificationIdU+numberNotificationSale
             return res.json({ success: true, message:"Success", data: count })
         }catch (error) {

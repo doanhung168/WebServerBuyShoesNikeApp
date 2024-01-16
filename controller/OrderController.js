@@ -142,7 +142,7 @@ const OrderController = {
     update: async (req, res) => {
         try {
             const updated = await Order.findByIdAndUpdate(req.body.id, req.body, { new: true })
-            const tokenUser = await Token.where({userId:req.body.user_id})
+            const tokenUser = await Token.where({userId:updated.user_id})
             var StrStatus =""
             if(req.body.status ==0){
                 StrStatus="đang đóng gói"
@@ -157,7 +157,6 @@ const OrderController = {
             }
             console.log(StrStatus);
             tokenUser.forEach((tonkenU) =>{
-                console.log(tonkenU);
                 var message = { 
                     "notification": {
                         "title":"Trạng thái đơn hàng",
@@ -185,7 +184,6 @@ const OrderController = {
                 notification.type = 1
                 notification.id_user = updated.user_id
                 await notification.save()
-                console.log(updated)
                 return res.json({ success: true, message: null, data: notification })
            
         } catch (error) {
