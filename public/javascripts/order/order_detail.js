@@ -41,6 +41,7 @@ function createItemUI(element) {
             <div class="mt-2 d-flex">
                 <p>Trạng thái: </p>
                 <select id="shoes_state" class="mx-4" style="border: none; outline: none;"  ${element.status == 3 ? 'disabled' : ''}>
+                    <option value="-1" ${element.status == -1 ? 'selected' : ''}>Chưa xác nhận</option>
                     <option value="0" ${element.status == 0 ? 'selected' : ''}>Đang đóng gói</option>
                     <option value="1" ${element.status == 1 ? 'selected' : ''}>Đang vận chuyển</option>
                     <option value="2" ${element.status == 2 ? 'selected' : ''}>Đang giao hàng</option>

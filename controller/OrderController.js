@@ -117,7 +117,7 @@ const OrderController = {
         try {
             const active = req.query.active
             if (active == 'true') {
-                const orders = await Order.find({ user_id: req.user._id, status: { $in: [0, 1, 2] } }, { order_details: 1, status: 1, total_price: 1 })
+                const orders = await Order.find({ user_id: req.user._id, status: { $in: [0, 1, 2, -1] } }, { order_details: 1, status: 1, total_price: 1 })
                     .populate({
                         path: 'order_details',
                         populate: 'shoes_id'
