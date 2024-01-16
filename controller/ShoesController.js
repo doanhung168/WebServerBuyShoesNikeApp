@@ -1,26 +1,52 @@
 const Shoes = require('../model/Shoes')
+const { Messaging } = require('../utlity')
+const Token = require('../model/Token')
+const Notification = require('../model/Notification')
 
 const ShoesController = {
 
     create: async (req, res) => {
         try {
-
+            console.log(req.body)
             const shoesNumber = await Shoes.countDocuments({ name: req.body.name })
             if (shoesNumber > 0) {
-                return res.json({ success: false, message: 'Exist shoes', data: null })
+                return res.json({ success: false, message: 'Giày này đã được tạo', data: null })
             }
 
             const shoes = new Shoes(req.body)
 
             const price = parseInt(shoes.price)
 
-            if(shoes.discount_unit == '0') {
+            if (shoes.discount_unit == '0') {
                 shoes.final_price = price - (price * parseInt(shoes.discount_quantity) / 100)
             } else {
                 shoes.final_price = price - parseInt(shoes.discount_quantity)
             }
 
             await shoes.save()
+
+            const tokenUser = await Token.find()
+            tokenUser.forEach((tokenU) => {
+                var message = {
+                    "data": {
+                        "id": shoes._id,
+                        "type": "NEW_SHOES_NOTIFY",
+                        "title": "Ra mắt " + shoes.name,
+                        "body": shoes.description,
+                        "image": shoes.main_image
+                    },
+                    "to": tokenU.token
+                };
+                Messaging.send(message)
+            })
+
+            const notification = new Notification
+            notification.title = "Ra mắt " + shoes.name
+            notification.content = shoes.description
+            notification.link = shoes._id
+            notification.type = "NEW_SHOES_NOTIFY"
+            await notification.save()
+
             return res.json({ success: true, message: null, data: shoes })
         } catch (e) {
             return res.json({ success: false, message: e.message, data: null })
@@ -138,7 +164,7 @@ const ShoesController = {
 
             const price = parseInt(updatedShoes.price)
 
-            if(updatedShoes.discount_unit == '0') {
+            if (updatedShoes.discount_unit == '0') {
                 updatedShoes.final_price = price - (price * parseInt(updatedShoes.discount_quantity) / 100)
             } else {
                 updatedShoes.final_price = price - parseInt(updatedShoes.discount_quantity)
@@ -206,7 +232,7 @@ const ShoesController = {
         const numberOfReviewers = shoes.number_of_reviews
         const newRate = ((rate * numberOfReviewers) + star) / (numberOfReviewers + 1)
         const newNumberOfReviews = shoes.number_of_reviews + 1
-        await Shoes.findByIdAndUpdate(shoesId, {rate: newRate, number_of_reviews: newNumberOfReviews})
+        await Shoes.findByIdAndUpdate(shoesId, { rate: newRate, number_of_reviews: newNumberOfReviews })
     },
 
     countShoes: async (req, res) => {

@@ -7,7 +7,7 @@ const OrderSchema = new Schema({
     order_details: { type: [ObjectId], ref: 'OrderDetail' },
     address: { type: ObjectId, ref: 'Address' },
     offer: { type: ObjectId, ref: 'Offer' },
-    order_date: { type: Number, default: Date.now },
+    order_date: { type: Number, default: Date.now() },
     receive_date: {type: Number, default: 0},
     status: { type: Number, default: -1}, // -1: Chưa xác nhận, 0: đóng gói, 1: vận chuyển, 2: giao hàng, 3: đã nhận hàng, 4: hủy
     payment_method: Number,

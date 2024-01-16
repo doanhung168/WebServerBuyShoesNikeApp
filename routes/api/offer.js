@@ -9,6 +9,7 @@ router
   .put('/', OfferController.update)
 
 router
+  .get('/byId', OfferController.getOfferById)
   .get('/get-available-offer', OfferController.getAvailableOfferList)
   .get('/get-expired-offer', OfferController.getExpiredOffer)
 

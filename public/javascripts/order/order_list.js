@@ -1,30 +1,3 @@
-$.ajax({
-    type: "get",
-    url: "/order?status=0&get_order_details=1&get_total_price=1&sort_created_date=-1",
-    success: function (response) {
-        console.log(response)
-        if (response.success) {
-            $('#number_of_shoes').text(` ${response.data.length} đơn hàng`);
-            $('#order-list-container').empty()
-            if (response.success) {
-                response.data.forEach(element => {
-                    createItemUI(element)
-                });
-            } else {
-                console.log(response.message)
-            }
-
-        } else {
-            console.log(response.message)
-        }
-    },
-    error: function (_, err) {
-        console.log(err)
-    }
-});
-
-
-
 function createItemUI(element) {
     let orderDetailString = ``
     element.order_details.forEach(order_detail => {
@@ -49,179 +22,80 @@ function createItemUI(element) {
 
 }
 
+const getOrderByStatus = function getOrderByStatus(status) {
+    $.ajax({
+        type: "get",
+        url: `/order?status=${status}&get_order_details=1&get_total_price=1&sort_created_date=-1`,
+        success: function (response) {
+            console.log(response)
+            if (response.success) {
+                $('#number_of_shoes').text(` ${response.data.length} đơn hàng`);
+                $('#order-list-container').empty()
+                if (response.success) {
+                    response.data.forEach(element => {
+                        createItemUI(element)
+                    });
+                } else {
+                    console.log(response.message)
+                }
+    
+            } else {
+                console.log(response.message)
+            }
+        },
+        error: function (_, err) {
+            console.log(err)
+        }
+    });
+}
+
+const getAllOrder = function getAllOrder() {
+    $.ajax({
+        type: "get",
+        url: "/order?get_order_details=1&get_total_price=1&sort_created_date=-1",
+        success: function (response) {
+            console.log(response)
+            if (response.success) {
+                $('#number_of_shoes').text(` ${response.data.length} đơn hàng`);
+                $('#order-list-container').empty()
+                if (response.success) {
+                    response.data.forEach(element => {
+                        createItemUI(element)
+                    });
+                } else {
+                    console.log(response.message)
+                }
+    
+            } else {
+                console.log(response.message)
+            }
+        },
+        error: function (_, err) {
+            console.log(err)
+        }
+    });
+}
+
+let loadOrder
 $('#order_state').change(function() {
-    // Retrieve the selected value
+    clearInterval(loadOrder);
     var selectedValue = $(this).val();
 
-    switch(selectedValue) {
-        case '0': {
-            $.ajax({
-                type: "get",
-                url: "/order?status=0&get_order_details=1&get_total_price=1&sort_created_date=-1",
-                success: function (response) {
-                    console.log(response)
-                    if (response.success) {
-                        $('#number_of_shoes').text(` ${response.data.length} đơn hàng`);
-                        $('#order-list-container').empty()
-                        if (response.success) {
-                            response.data.forEach(element => {
-                                createItemUI(element)
-                            });
-                        } else {
-                            console.log(response.message)
-                        }
-            
-                    } else {
-                        console.log(response.message)
-                    }
-                },
-                error: function (_, err) {
-                    console.log(err)
-                }
-            });
-            break
-        }
-
-        case '1': {
-            $.ajax({
-                type: "get",
-                url: "/order?status=1&get_order_details=1&get_total_price=1&sort_created_date=-1",
-                success: function (response) {
-                    console.log(response)
-                    if (response.success) {
-                        $('#number_of_shoes').text(` ${response.data.length} đơn hàng`);
-                        $('#order-list-container').empty()
-                        if (response.success) {
-                            response.data.forEach(element => {
-                                createItemUI(element)
-                            });
-                        } else {
-                            console.log(response.message)
-                        }
-            
-                    } else {
-                        console.log(response.message)
-                    }
-                },
-                error: function (_, err) {
-                    console.log(err)
-                }
-            });
-            break
-        }
-
-        case '2': {
-            $.ajax({
-                type: "get",
-                url: "/order?status=2&get_order_details=1&get_total_price=1&sort_created_date=-1",
-                success: function (response) {
-                    console.log(response)
-                    if (response.success) {
-                        $('#number_of_shoes').text(` ${response.data.length} đơn hàng`);
-                        $('#order-list-container').empty()
-                        if (response.success) {
-                            response.data.forEach(element => {
-                                createItemUI(element)
-                            });
-                        } else {
-                            console.log(response.message)
-                        }
-            
-                    } else {
-                        console.log(response.message)
-                    }
-                },
-                error: function (_, err) {
-                    console.log(err)
-                }
-            });
-            break
-        }
-
-        case '3': {
-            $.ajax({
-                type: "get",
-                url: "/order?status=3&get_order_details=1&get_total_price=1&sort_created_date=-1",
-                success: function (response) {
-                    console.log(response)
-                    if (response.success) {
-                        $('#number_of_shoes').text(` ${response.data.length} đơn hàng`);
-                        $('#order-list-container').empty()
-                        if (response.success) {
-                            response.data.forEach(element => {
-                                createItemUI(element)
-                            });
-                        } else {
-                            console.log(response.message)
-                        }
-            
-                    } else {
-                        console.log(response.message)
-                    }
-                },
-                error: function (_, err) {
-                    console.log(err)
-                }
-            });
-            break
-        }
-        
-        case '4': {
-            $.ajax({
-                type: "get",
-                url: "/order?status=4&get_order_details=1&get_total_price=1&sort_created_date=-1",
-                success: function (response) {
-                    console.log(response)
-                    if (response.success) {
-                        $('#number_of_shoes').text(` ${response.data.length} đơn hàng`);
-                        $('#order-list-container').empty()
-                        if (response.success) {
-                            response.data.forEach(element => {
-                                createItemUI(element)
-                            });
-                        } else {
-                            console.log(response.message)
-                        }
-            
-                    } else {
-                        console.log(response.message)
-                    }
-                },
-                error: function (_, err) {
-                    console.log(err)
-                }
-            });
-            break
-        }
-
-        case '5': {
-            $.ajax({
-                type: "get",
-                url: "/order?get_order_details=1&get_total_price=1&sort_created_date=-1",
-                success: function (response) {
-                    console.log(response)
-                    if (response.success) {
-                        $('#number_of_shoes').text(` ${response.data.length} đơn hàng`);
-                        $('#order-list-container').empty()
-                        if (response.success) {
-                            response.data.forEach(element => {
-                                createItemUI(element)
-                            });
-                        } else {
-                            console.log(response.message)
-                        }
-            
-                    } else {
-                        console.log(response.message)
-                    }
-                },
-                error: function (_, err) {
-                    console.log(err)
-                }
-            });
-            break
-        }
-
+    localStorage.setItem('order-list-state', selectedValue)
+    if(selectedValue == '5') {
+        getAllOrder()
+        loadOrder = setInterval(function() {getAllOrder()}, 5000);
+    } else {
+        getOrderByStatus(selectedValue)
+        loadOrder = setInterval(function() {getOrderByStatus(selectedValue)}, 5000);
     }
-
 })
+
+if(localStorage.getItem("order-list-state")) {
+    $('#order_state').val(localStorage.getItem("order-list-state"))
+    getOrderByStatus(localStorage.getItem("order-list-state"))
+    loadOrder = setInterval(function() {getOrderByStatus(localStorage.getItem("order-list-state"))}, 5000);
+} else {
+    getOrderByStatus(-1)
+    loadOrder = setInterval(function() {getOrderByStatus(-1)}, 5000);
+}

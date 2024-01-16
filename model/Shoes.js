@@ -16,7 +16,7 @@ const ShoesSchema = new Schema({
   images: [String],
   gender: Number, // 0: All, 1: Male, 2: Female
   created_date: { type: Number, default: Date.now },
-  state: {type: Number, default: 1}, // 0: Inactive, 1: Active, 2: Sold,
+  state: {type: Number, default: 1}, // 0: Inactive, 1: Active, 2: Sold, 3: All
   quantity: Number,
   discount_quantity: Number,
   discount_unit: Number, // 0: %, 1: vnđ
