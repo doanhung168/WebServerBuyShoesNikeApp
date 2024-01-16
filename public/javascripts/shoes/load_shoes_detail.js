@@ -29,7 +29,7 @@ function loadShoesDetail() {
 
                     $('#image_container').empty()
                     $('#image_container').append(
-                        `<div class="me-3" style="position: relative;display: inline-block;">
+                        `<div class="me-3 mt-3" style="position: relative;display: inline-block;">
                         <i class="fa-solid fa-circle-minus clear-image" onclick="return removeImage(this);" style="position: absolute; right: 18px; top: 2px;color: #e41b4d"></i>
                         <img src="${currentShoes.main_image}"  width="150px" height="150px" alt="" class="me-3 shoes_image_item">
                     </div>`
@@ -38,7 +38,7 @@ function loadShoesDetail() {
                     currentShoes.images.forEach(element => {
                         if (element != currentShoes.main_image) {
                             $('#image_container').append(
-                                `<div class="me-3" style="position: relative;display: inline-block;">
+                                `<div class="me-3 mt-3" style="position: relative;display: inline-block;">
                                 <i class="fa-solid fa-circle-minus clear-image" onclick="return removeImage(this);" style="position: absolute; right: 18px; top: 2px;color: #e41b4d"></i>
                                 <img src="${element}"  width="150px" height="150px" alt="" class="me-3 shoes_image_item">
                             </div>`
