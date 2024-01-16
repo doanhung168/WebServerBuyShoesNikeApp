@@ -7,7 +7,7 @@ const notificationShema = new Schema({
     content:String,
     seen:{type:Boolean,default:false},
     link:String,
-    type:{type:Number,default:0}, // 0:thông báo khuyến mãi  1:thông báo trạng thái đơn hàng   2:thông báo đơn hàng hoàn thành  
+    type: String, // 0:thông báo khuyến mãi  1:thông báo trạng thái đơn hàng   2:thông báo đơn hàng hoàn thành  
     time:{ type: Number, default: Date.now }
     
 })
