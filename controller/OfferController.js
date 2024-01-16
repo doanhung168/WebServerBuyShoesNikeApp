@@ -1,49 +1,43 @@
 const Offer = require('../model/Offer')
-var FCM  =require('fcm-node')
 const Token = require('../model/Token');
 const Notification = require('../model/Notification')
-var serverKey = 'AAAAAQBOwFE:APA91bGiHaLC5bTJCTzXfkQN_VnJL3SEfyrvIqTXAT98vbKE8cnBOKcZlcHPgJ8gW3xdqd7-pbrenhuBGkRiRMOdwjW6yaEQLOT-3EAlYfGnNrcfoPDk8t6XqLEHxJpDq5CesvnoTyER';
-var fcm = new FCM(serverKey);
+const { Messaging } = require("../utlity")
 const OfferController = {
 
     add: async (req, res) => {
         try {
 
             console.log(req.body)
-            const tokenUser = await Token.find()
             const { title } = req.body
             const existOffer = await Offer.countDocuments({ title: title })
             if (existOffer > 0) {
                 return res.json({ success: false, message: 'Đã tồn tại khuyến mãi này', data: null })
             }
-            tokenUser.forEach((tokenU) =>{
-                var message = { 
-                    "notification": {
+            const offer = new Offer(req.body)
+            await offer.save()
+
+            const tokenUser = await Token.find()
+            tokenUser.forEach((tokenU) => {
+                var message = {
+                    "data": {
+                        "id": offer._id,
+                        "type": "OFFER_NOTIFY",
                         "title": req.body.title,
-                       "body": req.body.description,
-                       "image":req.body.image               
-                   },
-                    "to":tokenU.token
+                        "body": req.body.description,
+                        "image": req.body.image
+                    },
+                    "to": tokenU.token
                 };
-                fcm.send(message,function(err, response){
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log(message)
-                    }
-                });
+                Messaging.send(message)
             })
-             const offer = new Offer(req.body)
+
             const notification = new Notification
             notification.title = req.body.title
             notification.content = req.body.description
-            notification.link = req.body.image
+            notification.link = offer._id
+            notification.type = "OFFER_NOTIFY"
             await notification.save()
-           
-            await offer.save()
-
             return res.json({ success: true, message: null, data: offer })
-
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
@@ -129,7 +123,7 @@ const OfferController = {
     getAvailableOfferList: async (req, res) => {
         try {
             const time = Date.now()
-            const offers = await Offer.find({ active: true, end_time: { $gt: time } }).sort({created_date: -1})
+            const offers = await Offer.find({ active: true, end_time: { $gt: time } }).sort({ created_date: -1 })
             return res.json({ success: true, message: null, data: offers })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
@@ -139,7 +133,7 @@ const OfferController = {
     getExpiredOffer: async (req, res) => {
         try {
             const time = Date.now()
-            const offers = await Offer.find({ active: true, end_time: { $lt: time } }).sort({created_date: -1})
+            const offers = await Offer.find({ active: true, end_time: { $lt: time } }).sort({ created_date: -1 })
             return res.json({ success: true, message: null, data: offers })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
@@ -149,8 +143,21 @@ const OfferController = {
     getOfferOfUser: async (req, res) => {
         try {
             const time = Date.now()
-            const offers = await Offer.find({ active: true, end_time: { $gt: time } }).sort({created_date: -1})
+            const offers = await Offer.find({ active: true, end_time: { $gt: time } }).sort({ created_date: -1 })
             return res.json({ success: true, message: null, data: offers })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+
+    getOfferById: async (req, res) => {
+        try {
+            const offer = await Offer.findById(req.query.id)
+            if(offer) {
+                return res.json({ success: true, message: null, data: offer })
+            } else {
+                return res.json({ success: false, message: "Không tìm thấy khuyến mãi", data: null })
+            }
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }

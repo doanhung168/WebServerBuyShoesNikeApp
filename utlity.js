@@ -66,4 +66,21 @@ const Bcrypt = {
     }
 }
 
-module.exports = { Jwt, EmailSender, Bcrypt, Constraint }
+
+
+var FCM = require('fcm-node')
+var serverKey = 'AAAAAQBOwFE:APA91bGiHaLC5bTJCTzXfkQN_VnJL3SEfyrvIqTXAT98vbKE8cnBOKcZlcHPgJ8gW3xdqd7-pbrenhuBGkRiRMOdwjW6yaEQLOT-3EAlYfGnNrcfoPDk8t6XqLEHxJpDq5CesvnoTyER';
+var fcm = new FCM(serverKey);
+const Messaging = {
+    send: async (data) => {
+        fcm.send(data, function (err, response) {
+            if (err) {
+                console.log("send notification failure " + err);
+            } else {
+                console.log("send notification successfully")
+            }
+        })
+    }
+}
+
+module.exports = { Jwt, EmailSender, Bcrypt, Constraint, Messaging }

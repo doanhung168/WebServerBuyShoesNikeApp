@@ -27,7 +27,7 @@ function uploadImage(file) {
     uploadImg.then(snapshot => snapshot.ref.getDownloadURL())
         .then(url => {
             $('#image_container').append(
-                `<div class="me-3" style="position: relative;display: inline-block;">
+                `<div class="me-3 mt-3" style="position: relative;display: inline-block;">
                     <i class="fa-solid fa-circle-minus" onclick="return removeImage(this);" style="position: absolute; right: 18px; top: 2px;color: #e41b4d"></i>
                     <img src="${url}" width="150px" height="150px" alt="" class="me-3 shoes_image_item">
                 </div>`
