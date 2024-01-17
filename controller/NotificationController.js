@@ -55,7 +55,7 @@ const NotificationController ={
     },
     getNotificationOffer:async(req,res)=>{
         try {
-            const notification = await Notification.find({type:0})
+            const notification = await Notification.find({type: { $in: ["NEW_SHOES_NOTIFY", "OFFER_NOTIFY", "OTHER_NOTIFY"] } })
             return res.json({ success: true, message:null, data: notification })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
