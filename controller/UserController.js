@@ -297,6 +297,23 @@ const UserController = {
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }
+    },
+    getUserDetail:async(req,res)=>{
+        try {
+            const user = await User.findOne({ _id: req.query.id })
+            return res.json({ success: true, message: null, data: user })
+        } catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
+    },
+    updateStateUser:async(req,res)=>{
+        try{
+            console.log(req.body);
+            const updated = await User.findByIdAndUpdate(req.body.id, req.body, { new: true })
+            return res.json({ success: true, message: null, data: null })
+        }catch (error) {
+            return res.json({ success: false, message: error.message, data: null })
+        }
     }
 
 }
