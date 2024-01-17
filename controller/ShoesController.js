@@ -25,6 +25,13 @@ const ShoesController = {
 
             await shoes.save()
 
+            const notification = new Notification
+            notification.title = "Ra mắt " + shoes.name
+            notification.content = shoes.description
+            notification.link = shoes._id
+            notification.type = "NEW_SHOES_NOTIFY"
+            await notification.save()
+
             const tokenUser = await Token.find()
             tokenUser.forEach((tokenU) => {
                 var message = {
@@ -33,19 +40,13 @@ const ShoesController = {
                         "type": "NEW_SHOES_NOTIFY",
                         "title": "Ra mắt " + shoes.name,
                         "body": shoes.description,
-                        "image": shoes.main_image
+                        "image": shoes.main_image,
+                        "notification_id": notification._id
                     },
                     "to": tokenU.token
                 };
                 Messaging.send(message)
             })
-
-            const notification = new Notification
-            notification.title = "Ra mắt " + shoes.name
-            notification.content = shoes.description
-            notification.link = shoes._id
-            notification.type = "NEW_SHOES_NOTIFY"
-            await notification.save()
 
             return res.json({ success: true, message: null, data: shoes })
         } catch (e) {

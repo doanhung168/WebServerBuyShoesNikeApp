@@ -5,10 +5,13 @@ function loadOfferList() {
         success: function (response) {
             if (response.success) {
                 $('#offer-list').empty()
-                response.data.forEach(element => {
-                    createOneUI(element)
-                    // const expired = (new Date(element.end_time)) > Date.now()
-                });
+                if(response.data.length == 0) {
+                    showNoneData()
+                } else {
+                    response.data.forEach(element => {
+                        createOneUI(element)
+                    });
+                }
             } else {
                 console.log(response.message)
             }
@@ -30,6 +33,12 @@ function createOneUI(element) {
     </div>`)
 }
 
+function showNoneData() {
+    $('#offer-list').append(
+        `<p>Không có khuyến mãi nào ở trạng thái trên</p>`
+    )
+}
+
 loadOfferList()
 
 
@@ -45,10 +54,13 @@ $('#offer_state').change(function() {
                 success: function (response) {
                     if (response.success) {
                         $('#offer-list').empty()
-                        response.data.forEach(element => {
-                            createOneUI(element)
-                            // const expired = (new Date(element.end_time)) > Date.now()
-                        });
+                        if(response.data.length == 0) {
+                            showNoneData()
+                        } else {
+                            response.data.forEach(element => {
+                                createOneUI(element)
+                            });
+                        }
                     } else {
                         console.log(response.message)
                     }
@@ -64,10 +76,13 @@ $('#offer_state').change(function() {
                 success: function (response) {
                     if (response.success) {
                         $('#offer-list').empty()
-                        response.data.forEach(element => {
-                            createOneUI(element)
-                            // const expired = (new Date(element.end_time)) > Date.now()
-                        });
+                        if(response.data.length == 0) {
+                            showNoneData()
+                        } else {
+                            response.data.forEach(element => {
+                                createOneUI(element)
+                            });
+                        }
                     } else {
                         console.log(response.message)
                     }
@@ -83,9 +98,13 @@ $('#offer_state').change(function() {
                 success: function (response) {
                     if (response.success) {
                         $('#offer-list').empty()
-                        response.data.forEach(element => {
-                            createOneUI(element)
-                        });
+                        if(response.data.length == 0) {
+                            showNoneData()
+                        } else {
+                            response.data.forEach(element => {
+                                createOneUI(element)
+                            });
+                        }
                     } else {
                         console.log(response.message)
                     }
@@ -101,9 +120,13 @@ $('#offer_state').change(function() {
                 success: function (response) {
                     if (response.success) {
                         $('#offer-list').empty()
-                        response.data.forEach(element => {
-                            createOneUI(element)
-                        });
+                        if(response.data.length == 0) {
+                            showNoneData()
+                        } else {
+                            response.data.forEach(element => {
+                                createOneUI(element)
+                            });
+                        }
                     } else {
                         console.log(response.message)
                     }

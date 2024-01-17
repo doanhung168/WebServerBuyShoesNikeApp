@@ -39,7 +39,7 @@ const NotificationController ={
     },
     get:async(req,res)=>{
         try {
-            const notification = await Notification.find()
+            const notification = await Notification.find().sort({time: -1})
             return res.json({ success: true, message:null, data: notification })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
@@ -47,7 +47,7 @@ const NotificationController ={
     },
     getByIdUser:async(req,res)=>{
         try {
-            const notification = await Notification.find({id_user:req.params.id_user})
+            const notification = await Notification.find({id_user: req.user._id}).sort({time: -1})
             return res.json({ success: true, message:null, data: notification })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
@@ -56,6 +56,7 @@ const NotificationController ={
     getNotificationOffer:async(req,res)=>{
         try {
             const notification = await Notification.find({type: { $in: ["NEW_SHOES_NOTIFY", "OFFER_NOTIFY", "OTHER_NOTIFY"] } })
+                .sort({time: -1})
             return res.json({ success: true, message:null, data: notification })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
@@ -78,11 +79,8 @@ const NotificationController ={
     getQuantityNotification:async(req,res)=>{
         try{
             const numberNotificationIdU = await Notification.countDocuments({id_user:req.params.idU,seen:false})
-            const numberNotificationSale = await Notification.countDocuments({type:0,seen:false})
             console.log(numberNotificationIdU);
-            console.log(numberNotificationSale);
-            var count = numberNotificationIdU+numberNotificationSale
-            return res.json({ success: true, message:"Success", data: count })
+            return res.json({ success: true, message:"Success", data: numberNotificationIdU })
         }catch (error) {
             return res.json({ success: false, message: error.message, data: null })
         }

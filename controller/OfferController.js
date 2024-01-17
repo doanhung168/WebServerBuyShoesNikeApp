@@ -16,6 +16,13 @@ const OfferController = {
             const offer = new Offer(req.body)
             await offer.save()
 
+            const notification = new Notification
+            notification.title = req.body.title
+            notification.content = req.body.description
+            notification.link = offer._id
+            notification.type = "OFFER_NOTIFY"
+            await notification.save()
+
             const tokenUser = await Token.find()
             tokenUser.forEach((tokenU) => {
                 var message = {
@@ -24,19 +31,14 @@ const OfferController = {
                         "type": "OFFER_NOTIFY",
                         "title": req.body.title,
                         "body": req.body.description,
-                        "image": req.body.image
+                        "image": req.body.image,
+                        "notification_id": notification._id
                     },
                     "to": tokenU.token
                 };
                 Messaging.send(message)
             })
 
-            const notification = new Notification
-            notification.title = req.body.title
-            notification.content = req.body.description
-            notification.link = offer._id
-            notification.type = "OFFER_NOTIFY"
-            await notification.save()
             return res.json({ success: true, message: null, data: offer })
         } catch (error) {
             return res.json({ success: false, message: error.message, data: null })
