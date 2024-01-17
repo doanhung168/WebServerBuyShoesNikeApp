@@ -33,7 +33,12 @@
                         </select>
                         <a class="btn btn-success" href="/shoes-create">Tạo một giày mới</a>
                     </div>
+                    
                     <hr>
+                    <div class="d-flex p-3" style="border: #cdcdcd; border-width: 1px;">
+                        <input type="text" id="queryText" style="outline: none;">
+                        <button type="button" style="border: none;" onclick="filterShoesByName()">Tìm</button>
+                    </div>
 
                     <div class="d-flex py-3 mx-3" style="flex-direction: column;" id="shoes-list-container">
 
