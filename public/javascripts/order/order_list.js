@@ -80,7 +80,6 @@ let loadOrder
 $('#order_state').change(function() {
     clearInterval(loadOrder);
     var selectedValue = $(this).val();
-
     localStorage.setItem('order-list-state', selectedValue)
     if(selectedValue == '5') {
         getAllOrder()
@@ -91,10 +90,19 @@ $('#order_state').change(function() {
     }
 })
 
-if(localStorage.getItem("order-list-state")) {
-    $('#order_state').val(localStorage.getItem("order-list-state"))
-    getOrderByStatus(localStorage.getItem("order-list-state"))
-    loadOrder = setInterval(function() {getOrderByStatus(localStorage.getItem("order-list-state"))}, 5000);
+const orderState = localStorage.getItem("order-list-state")
+
+if(orderState) {
+    $('#order_state').val(orderState)
+
+    if(orderState == '5') {
+        getAllOrder()
+        loadOrder = setInterval(function() {getAllOrder()}, 5000);
+    } else {
+        getOrderByStatus(orderState)
+        loadOrder = setInterval(function() {getOrderByStatus(orderState)}, 5000);
+    }
+
 } else {
     getOrderByStatus(-1)
     loadOrder = setInterval(function() {getOrderByStatus(-1)}, 5000);

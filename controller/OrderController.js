@@ -145,18 +145,7 @@ const OrderController = {
             const status = req.body.status
             if (status == 0 || status == 2) {
                 var content = status == 0 ? `Đơn hàng #${req.body.id} của bạn đã được xác nhận. Cảm ơn quý khách đã đặt hàng của chúng tôi` : `Đơn hàng #${req.body.id} của bạn sẽ được giao hàng trong hôm nay. Quý khách vui lòng chú ý liên lạc để nhận hàng.`
-                tokenUser.forEach((tonkenU) => {
-                    var message = {
-                        "data": {
-                            "id": req.body.id,
-                            "type": "ORDER_NOTIFY",
-                            "title": "Cập nhật trạng thái đơn hàng",
-                            "body": content
-                        },
-                        "to": tonkenU.token
-                    };
-                    Messaging.send(message)
-                })
+                
                 const notification = new Notification
                 notification.title = "Trạng thái đơn hàng"
                 notification.content = content
@@ -164,6 +153,20 @@ const OrderController = {
                 notification.type = "ORDER_NOTIFY"
                 notification.id_user = updated.user_id
                 await notification.save()
+
+                tokenUser.forEach((tonkenU) => {
+                    var message = {
+                        "data": {
+                            "id": req.body.id,
+                            "type": "ORDER_NOTIFY",
+                            "title": "Cập nhật trạng thái đơn hàng",
+                            "body": content,
+                            "notification_id": notification._id
+                        },
+                        "to": tonkenU.token
+                    };
+                    Messaging.send(message)
+                })
             }
             return res.json({ success: true, message: null, data: null })
         } catch (error) {
